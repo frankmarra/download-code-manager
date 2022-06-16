@@ -1,0 +1,9 @@
+.mainWrapper {
+  margin: auto;
+  width: 400px;
+  border-radius: 10px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+

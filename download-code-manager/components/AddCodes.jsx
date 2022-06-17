@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-const CodeGenerator = ({ artists }) => {
-  const [randomCode, setRandomCode] = useState({})
+const AddCodes = ({ artists }) => {
+  const [codes, setCodes] = useState([])
   const [formValues, setFormValues] = useState({
     artist: '',
-    album: ''
+    album: '',
+    albumCodes: ''
   })
 
   const handleChange = (e) => {
@@ -14,28 +15,22 @@ const CodeGenerator = ({ artists }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.get(
-      `http://localhost:3001/api/labels/1/artists/${formValues.artist}/albums/${formValues.album}/codes/unused`
-    )
-    let randomNumber = Math.floor(Math.random() * res.data.length)
-    setRandomCode(res.data[randomNumber])
-    // if (randomCode) {
-    //   let codeId = parseInt(randomCode.id)
-    //   console.log('codeId:', codeId)
-    //   await axios.put(
-    //     `http://localhost:3001/api/labels/1/artists/${formValues.artist}/albums/$formValues.album/codes/${codeId}`,
-    //     { used: true }
-    //   )
-    // }
+    let codeArray = []
+    let newCodes = formValues.albumCodes.split(/\s/g)
+    newCodes.forEach((code) => {
+      let newCode = {
+        albumId: formValues.album,
+        albumCode: code,
+        used: false
+      }
+      codeArray.push(newCode)
+    })
+    setCodes(codeArray)
   }
 
   return (
-    <div className="artist-album-select-wrapper">
-      <form
-        className="artist-album-select-form"
-        id="artist-album-select"
-        onSubmit={handleSubmit}
-      >
+    <div className="add-codes-wrapper">
+      <form className="add-codes-form" id="add-codes" onSubmit={handleSubmit}>
         <div className="input-wrapper">
           <label htmlFor="artist">Artist</label>
           <select name="artist" onChange={handleChange}>
@@ -49,7 +44,7 @@ const CodeGenerator = ({ artists }) => {
           <div className="input-wrapper">
             <label htmlFor="album">Album</label>
             <select name="album" onChange={handleChange}>
-              <option value="">--Please choose and album--</option>
+              <option value="">--Please choose an album--</option>
               {artists[formValues.artist - 1].Albums.map((album) => (
                 <option value={album.id}>{album.albumName}</option>
               ))}
@@ -59,18 +54,27 @@ const CodeGenerator = ({ artists }) => {
           <div></div>
         )}
         {formValues.album != '' ? (
-          <button type="submit">Get Code!</button>
+          <div className="input-wrapper">
+            <label htmlFor="albumCodes">Codes</label>
+            <textarea
+              name="albumCodes"
+              placeholder="Enter your codes separated by a space"
+              cols="50"
+              rows="8"
+              onChange={handleChange}
+            ></textarea>
+          </div>
+        ) : (
+          <div></div>
+        )}
+        {formValues.albumCodes != '' ? (
+          <button type="submit">Add Codes!</button>
         ) : (
           <div></div>
         )}
       </form>
-      {randomCode != {} ? (
-        <div className="random-code">{randomCode.albumCode}</div>
-      ) : (
-        <div>Please choose and artist and album to generate a code</div>
-      )}
     </div>
   )
 }
 
-export default CodeGenerator
+export default AddCodes

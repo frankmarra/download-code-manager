@@ -6,6 +6,7 @@ import utilStyles from '../../styles/utils.module.css'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 import CodeGenerator from '../../components/CodeGenerator'
+import AddCodes from '../../components/AddCodes'
 
 export default function TestLabel({ activeLabel }) {
   const [label, setLabel] = useState()
@@ -40,6 +41,7 @@ export default function TestLabel({ activeLabel }) {
         </h2>
       </section>
       <CodeGenerator artists={label.Artists} />
+      <AddCodes artists={label.Artists} />
     </Layout>
   ) : (
     <div>Loading...</div>

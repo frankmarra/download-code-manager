@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const AddCodes = ({ artists }) => {
   const [codes, setCodes] = useState([])
+  const [codesAdded, setCodesAdded] = useState(false)
   const [formValues, setFormValues] = useState({
     artist: '',
     album: '',
@@ -26,9 +27,30 @@ const AddCodes = ({ artists }) => {
       codeArray.push(newCode)
     })
     setCodes(codeArray)
+    await axios.post(
+      `http://localhost:3001/api/labels/1/artists/${formValues.artist}/albums/${formValues.album}/create-codes`,
+      codes
+    )
+    setCodesAdded(true)
   }
 
-  return (
+  const addMoreCodes = () => {
+    setFormValues({
+      artist: '',
+      album: '',
+      albumCodes: ''
+    })
+    setCodesAdded(false)
+  }
+
+  return codesAdded ? (
+    <div>
+      <h2>Codes Added!</h2>
+      <button type="submit" onClick={addMoreCodes}>
+        Add more codes?
+      </button>
+    </div>
+  ) : (
     <div className="add-codes-wrapper">
       <form className="add-codes-form" id="add-codes" onSubmit={handleSubmit}>
         <div className="input-wrapper">

@@ -1,13 +1,24 @@
 import Link from 'next/link'
+import { useCookies } from 'react-cookie'
+import Router, { useRouter } from 'next/router'
 
-const Nav = ({ authenticated, activeLabel, handleLogOut }) => {
+const Nav = () => {
+  const [cookies, setCookie, removeCookie] = useCookies('user')
   let authenticatedOptions
-  if (activeLabel) {
+  let auth = cookies.userId
+
+  const handleLogout = () => {
+    removeCookie('userId')
+    Router.push('/')
+    // window.location.reload()
+  }
+  if (auth) {
     authenticatedOptions = (
       <ul className="nav-bar">
         <li>Add Artist</li>
         <li>Add Album</li>
         <li>Add Codes</li>
+        <li onClick={() => handleLogout()}>Log out</li>
       </ul>
     )
   }
@@ -23,10 +34,6 @@ const Nav = ({ authenticated, activeLabel, handleLogOut }) => {
     </ul>
   )
 
-  return (
-    <nav>
-      {authenticated && activeLabel ? authenticatedOptions : publicOptions}
-    </nav>
-  )
+  return <nav>{auth ? authenticatedOptions : publicOptions}</nav>
 }
 export default Nav

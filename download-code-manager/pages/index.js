@@ -1,24 +1,13 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
-import { getSortedLabelData } from '../lib/labels'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Nav from '../components/navbar'
 
-export async function getStaticProps() {
-  const allLabelData = getSortedLabelData()
-  return {
-    props: {
-      allLabelData
-    }
-  }
-}
-
-export default function Home({ allPostsData }) {
+export default function Home() {
   const [activeLabel, setActiveLabel] = useState({ id: 0, labelName: 'guest' })
   const [authenticated, setAuthenticated] = useState(false)
-  let hello = 'hello'
+
   return (
     <div className={styles.container}>
       <Head>
@@ -27,7 +16,7 @@ export default function Home({ allPostsData }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header>
-        <Nav authenticated={authenticated} setActiveLabel={setActiveLabel} />
+        <Nav />
       </header>
       <main className={styles.main}>
         <h1 className={styles.title}>

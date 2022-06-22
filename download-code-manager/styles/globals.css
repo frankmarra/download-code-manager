@@ -14,3 +14,32 @@ a {
 * {
   box-sizing: border-box;
 }
+
+nav {
+
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+  font-size: 1.5rem;
+}
+
+
+.nav-bar {
+  width: 20%;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  list-style-type: none;
+}
+
+main {
+  width: 100%;
+}
+
+section {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}

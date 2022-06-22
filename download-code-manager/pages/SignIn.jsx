@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import Link from 'next/link'
 import { SignInUser } from '../services/Auth'
 import { useRouter } from 'next/router'
+import { useCookies } from 'react-cookie'
+import axios from 'axios'
 
-const SignIn = ({ setActiveLabel, toggleAuthenticated }) => {
+const SignIn = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const [formValues, setFormValues] = useState({
     labelEmail: '',
     labelPassword: ''
@@ -17,9 +19,8 @@ const SignIn = ({ setActiveLabel, toggleAuthenticated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const payload = await SignInUser(formValues)
+    setCookie('userId', payload)
     setFormValues({ userEmail: '', userPassword: '' })
-    setActiveUser(payload)
-    toggleAuthenticated(true)
     router.push(`/labels/${payload.id}`)
   }
 

@@ -1,6 +1,6 @@
 .mainWrapper {
   margin: auto;
-  width: 400px;
+  width: 100%;
   border-radius: 10px;
   display: flex;
   flex-flow: column;

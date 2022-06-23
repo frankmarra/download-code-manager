@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const CodeGenerator = ({ artists }) => {
   const [randomCode, setRandomCode] = useState({})
+  const [clicked, setClicked] = useState(false)
   const [formValues, setFormValues] = useState({
     artist: '',
     album: ''
@@ -19,6 +20,7 @@ const CodeGenerator = ({ artists }) => {
     )
     let randomNumber = Math.floor(Math.random() * res.data.length)
     setRandomCode(res.data[randomNumber])
+    setClicked(true)
     // if (randomCode) {
     //   let codeId = parseInt(randomCode.id)
     //   console.log('codeId:', codeId)
@@ -59,7 +61,11 @@ const CodeGenerator = ({ artists }) => {
           <div></div>
         )}
         {formValues.album != '' ? (
-          <button type="submit">Get Code!</button>
+          clicked ? (
+            <h4>Your Code:</h4>
+          ) : (
+            <button type="submit">Get Code!</button>
+          )
         ) : (
           <div></div>
         )}

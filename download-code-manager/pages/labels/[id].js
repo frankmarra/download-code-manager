@@ -6,6 +6,7 @@ import axios from 'axios'
 import CodeGenerator from '../../components/CodeGenerator'
 import AddCodes from '../../components/AddCodes'
 import { useCookies } from 'react-cookie'
+import { useEffect, useState } from 'react'
 import Nav from '../../components/navbar'
 
 export async function getStaticPaths() {
@@ -25,8 +26,16 @@ export async function getStaticProps({ params }) {
 
 export default function LabelPage({ label }) {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
+  const [auth, setAuth] = useState(false)
 
-  const auth = cookies.userId
+  useEffect(() => {
+    if (cookies.userId) {
+      console.log('cookies', cookies)
+      if (cookies.userId.id === label.id) {
+        setAuth(true)
+      }
+    }
+  }, [label])
 
   return label ? (
     <Layout>
@@ -53,9 +62,15 @@ export default function LabelPage({ label }) {
         </a>
         <h1 className={utilStyles.labelName}>{label.labelName}</h1>
         {auth ? (
-          <AddCodes artists={label.Artists} />
+          <div>
+            <h2>Add Codes</h2>
+            <AddCodes artists={label.Artists} />
+          </div>
         ) : (
-          <CodeGenerator artists={label.Artists} />
+          <div>
+            <h3>Get Code</h3>
+            <CodeGenerator artists={label.Artists} />
+          </div>
         )}
       </section>
     </Layout>

@@ -1,23 +1,25 @@
 import Link from 'next/link'
 import { useCookies } from 'react-cookie'
 import Router, { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 
 const Nav = () => {
   const [cookies, setCookie, removeCookie] = useCookies('user')
-  let authenticatedOptions
-  let auth = cookies.userId
+  const [auth, setAuth] = useState(false)
 
+  useEffect(() => {
+    if (cookies.userId) {
+      setAuth(true)
+    }
+  }, [])
+  let authenticatedOptions
   const handleLogout = () => {
     removeCookie('userId')
     Router.push('/')
-    // window.location.reload()
   }
   if (auth) {
     authenticatedOptions = (
       <ul className="nav-bar">
-        <li>Add Artist</li>
-        <li>Add Album</li>
-        <li>Add Codes</li>
         <li onClick={() => handleLogout()}>Log out</li>
       </ul>
     )
@@ -25,7 +27,6 @@ const Nav = () => {
 
   const publicOptions = (
     <ul className="nav-bar">
-      <li>Register</li>
       <Link href="/SignIn">
         <a>
           <li>Sign In</li>

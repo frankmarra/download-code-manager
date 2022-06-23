@@ -5,9 +5,6 @@ import { useState } from 'react'
 import Nav from '../components/navbar'
 
 export default function Home() {
-  const [activeLabel, setActiveLabel] = useState({ id: 0, labelName: 'guest' })
-  const [authenticated, setAuthenticated] = useState(false)
-
   return (
     <div className={styles.container}>
       <Head>
@@ -19,11 +16,12 @@ export default function Home() {
         <Nav />
       </header>
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          <Link href="/labels/test-label">
-            <a>Test label</a>
-          </Link>
-        </h1>
+        <h1 className={styles.title}>Download Code Manager</h1>
+        <h2>Coming Soon!</h2>
+        <h3>Your one stop shop for code storage and dispersal!</h3>
+        <h4>
+          Interested in joining? Send us an <span>Email!</span>
+        </h4>
       </main>
 
       <footer className={styles.footer}></footer>

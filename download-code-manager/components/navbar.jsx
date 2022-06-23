@@ -3,23 +3,30 @@ import { useCookies } from 'react-cookie'
 import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
-const Nav = () => {
-  const [cookies, setCookie, removeCookie] = useCookies('user')
+const Nav = ({ cookies, removeCookie }) => {
+  // const [cookies, setCookie, removeCookie] = useCookies('user')
   const [auth, setAuth] = useState(false)
 
   useEffect(() => {
-    if (cookies.userId) {
-      setAuth(true)
+    if (cookies) {
+      if (cookies.userId) {
+        setAuth(true)
+      }
     }
   }, [])
   let authenticatedOptions
   const handleLogout = () => {
-    removeCookie('userId')
+    removeCookie('userId', { path: '/labels' })
     Router.push('/')
   }
   if (auth) {
     authenticatedOptions = (
       <ul className="nav-bar">
+        <Link href="/AddArtist">
+          <a>
+            <li>Add Artist</li>
+          </a>
+        </Link>
         <li onClick={() => handleLogout()}>Log out</li>
       </ul>
     )

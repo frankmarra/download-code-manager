@@ -1,14 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const CodeGenerator = ({ artists }) => {
-  const [randomCode, setRandomCode] = useState({})
+const CodeGenerator = ({ artists, redeemLink }) => {
+  const [randomCode, setRandomCode] = useState()
   const [clicked, setClicked] = useState(false)
   const [formValues, setFormValues] = useState({
     artist: '',
     album: ''
   })
 
+  useEffect(() => {
+    const removeCode = async () => {
+      if (randomCode) {
+        let codeId = parseInt(randomCode.id)
+        console.log('codeId:', codeId)
+        await axios.put(
+          `http://localhost:3001/api/labels/1/artists/${formValues.artist}/albums/${formValues.album}/codes/${codeId}`,
+          { used: true }
+        )
+      }
+    }
+    removeCode(randomCode)
+  }, [randomCode])
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
@@ -21,14 +34,6 @@ const CodeGenerator = ({ artists }) => {
     let randomNumber = Math.floor(Math.random() * res.data.length)
     setRandomCode(res.data[randomNumber])
     setClicked(true)
-    // if (randomCode) {
-    //   let codeId = parseInt(randomCode.id)
-    //   console.log('codeId:', codeId)
-    //   await axios.put(
-    //     `http://localhost:3001/api/labels/1/artists/${formValues.artist}/albums/$formValues.album/codes/${codeId}`,
-    //     { used: true }
-    //   )
-    // }
   }
 
   return (
@@ -42,8 +47,10 @@ const CodeGenerator = ({ artists }) => {
           <label htmlFor="artist">Artist</label>
           <select name="artist" onChange={handleChange}>
             <option value="">--Please choose an artist--</option>
-            {artists.map((artist) => (
-              <option value={artist.id}>{artist.artistName}</option>
+            {artists.map((artist, index) => (
+              <option key={index} value={artist.id}>
+                {artist.name}
+              </option>
             ))}
           </select>
         </div>
@@ -52,8 +59,10 @@ const CodeGenerator = ({ artists }) => {
             <label htmlFor="album">Album</label>
             <select name="album" onChange={handleChange}>
               <option value="">--Please choose and album--</option>
-              {artists[formValues.artist - 1].Albums.map((album) => (
-                <option value={album.id}>{album.albumName}</option>
+              {artists[formValues.artist - 1].Albums.map((album, index) => (
+                <option key={index} value={album.id}>
+                  {album.name}
+                </option>
               ))}
             </select>
           </div>
@@ -70,10 +79,15 @@ const CodeGenerator = ({ artists }) => {
           <div></div>
         )}
       </form>
-      {randomCode != {} ? (
-        <div className="random-code">{randomCode.albumCode}</div>
+      {randomCode ? (
+        <div className="random-code">
+          {randomCode.albumCode}
+          <div className="redeem-link">
+            <a href={redeemLink}>Redeem Here</a>
+          </div>
+        </div>
       ) : (
-        <div>Please choose and artist and album to generate a code</div>
+        <div>Please choose an artist and album to generate a code</div>
       )}
     </div>
   )

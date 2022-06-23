@@ -7,8 +7,8 @@ import axios from 'axios'
 const SignIn = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const [formValues, setFormValues] = useState({
-    labelEmail: '',
-    labelPassword: ''
+    email: '',
+    password: ''
   })
   const router = useRouter()
 
@@ -20,7 +20,7 @@ const SignIn = () => {
     e.preventDefault()
     const payload = await SignInUser(formValues)
     setCookie('userId', payload)
-    setFormValues({ userEmail: '', userPassword: '' })
+    setFormValues({ email: '', password: '' })
     router.push(`/labels/${payload.id}`)
   }
 
@@ -30,30 +30,30 @@ const SignIn = () => {
         <h1>Log-In</h1>
         <form className="signin-form" onSubmit={handleSubmit}>
           <div className="input-wrapper">
-            <label htmlFor="labelEmail">Email:</label>
+            <label htmlFor="email">Email:</label>
             <input
               onChange={handleChange}
-              name="labelEmail"
+              name="email"
               type="email"
               placeholder="Enter Email"
-              value={formValues.userEmail}
+              value={formValues.email}
               required
             />
           </div>
           <div className="input-wrapper">
-            <label htmlFor="labelPassword">Password</label>
+            <label htmlFor="password">Password</label>
             <input
               onChange={handleChange}
-              name="labelPassword"
+              name="password"
               type="password"
-              value={formValues.labelPassword}
+              value={formValues.password}
               required
             />
           </div>
           <button
             type="submit"
             className="signin-button"
-            disabled={!formValues.labelEmail || !formValues.labelPassword}
+            disabled={!formValues.email || !formValues.password}
           >
             Sign In
           </button>

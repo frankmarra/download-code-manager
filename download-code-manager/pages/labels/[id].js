@@ -21,6 +21,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const res = await axios.get(`http://localhost:3001/api/labels/${params.id}`)
   const label = res.data
+
   return { props: { label } }
 }
 
@@ -30,7 +31,6 @@ export default function LabelPage({ label }) {
 
   useEffect(() => {
     if (cookies.userId) {
-      console.log('cookies', cookies)
       if (cookies.userId.id === label.id) {
         setAuth(true)
       }
@@ -40,27 +40,27 @@ export default function LabelPage({ label }) {
   return label ? (
     <Layout>
       <Head>
-        <title>{label.labelName}</title>
+        <title>{label.name}</title>
       </Head>
       <header>
-        <Nav />
+        <Nav cookies={cookies} removeCookie={removeCookie} />
       </header>
       <section>
-        <a href={label.labelWebsite}>
+        <a href={label.url}>
           <Image
             priority
             src={
-              label.labelLogo
-                ? label.labelLogo
+              label.logo
+                ? label.logo
                 : `/download-code-manager/public/images/pexels-hermaion-104084.jpeg`
             }
             className={utilStyles.labelLogo}
             height={300}
             width={300}
-            alt={label.labelName}
+            alt={label.name}
           />
         </a>
-        <h1 className={utilStyles.labelName}>{label.labelName}</h1>
+        <h1 className={utilStyles.labelName}>{label.name}</h1>
         {auth ? (
           <div>
             <h2>Add Codes</h2>
@@ -69,7 +69,10 @@ export default function LabelPage({ label }) {
         ) : (
           <div>
             <h3>Get Code</h3>
-            <CodeGenerator artists={label.Artists} />
+            <CodeGenerator
+              artists={label.Artists}
+              redeemLink={label.redeemLink}
+            />
           </div>
         )}
       </section>

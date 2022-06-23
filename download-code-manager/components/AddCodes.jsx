@@ -58,7 +58,7 @@ const AddCodes = ({ artists }) => {
           <select name="artist" onChange={handleChange}>
             <option value="">--Please choose an artist--</option>
             {artists.map((artist) => (
-              <option value={artist.id}>{artist.artistName}</option>
+              <option value={artist.id}>{artist.name}</option>
             ))}
           </select>
         </div>
@@ -68,7 +68,7 @@ const AddCodes = ({ artists }) => {
             <select name="album" onChange={handleChange}>
               <option value="">--Please choose an album--</option>
               {artists[formValues.artist - 1].Albums.map((album) => (
-                <option value={album.id}>{album.albumName}</option>
+                <option value={album.id}>{album.name}</option>
               ))}
             </select>
           </div>

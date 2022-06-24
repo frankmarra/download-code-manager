@@ -30,8 +30,8 @@ export default function LabelPage({ label }) {
   const [auth, setAuth] = useState(false)
 
   useEffect(() => {
-    if (cookies.userId) {
-      if (cookies.userId.id === label.id) {
+    if (cookies.user) {
+      if (cookies.user.user.labelId === label.id || cookies.user.user.isAdmin) {
         setAuth(true)
       }
     }

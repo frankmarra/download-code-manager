@@ -20,7 +20,7 @@ const AddArtist = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await axios.post(
-      `http://localhost:3001/api/labels/${cookies.userId.id}`,
+      `http://localhost:3001/api/labels/${cookies.user.id}`,
       formValues
     )
     setNewArtist(res.data)
@@ -43,7 +43,7 @@ const AddArtist = () => {
         </button>
         <button
           onClick={() => {
-            router.push(`/labels/${cookies.userId.id}`)
+            router.push(`/labels/${cookies.user.id}`)
           }}
         >
           Home
@@ -84,7 +84,7 @@ const AddArtist = () => {
           </button>
           <button
             onClick={() => {
-              router.push(`/labels/${cookies.userId.id}`)
+              router.push(`/labels/${cookies.user.id}`)
             }}
           >
             Home

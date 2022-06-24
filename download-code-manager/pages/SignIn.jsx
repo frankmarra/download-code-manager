@@ -19,9 +19,13 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const payload = await SignInUser(formValues)
-    setCookie('userId', payload)
+    setCookie('user', payload, { path: '/' })
     setFormValues({ email: '', password: '' })
-    router.push(`/labels/${payload.id}`)
+    if (!payload.labelId) {
+      router.push('/')
+    } else {
+      router.push(`/labels/${payload.labelId}`)
+    }
   }
 
   return (

@@ -4,19 +4,19 @@ import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 const Nav = ({ cookies, removeCookie }) => {
-  // const [cookies, setCookie, removeCookie] = useCookies('user')
+  //const [cookies, setCookie, removeCookie] = useCookies('user')
   const [auth, setAuth] = useState(false)
 
   useEffect(() => {
     if (cookies) {
-      if (cookies.userId) {
+      if (cookies.user) {
         setAuth(true)
       }
     }
   }, [])
   let authenticatedOptions
   const handleLogout = () => {
-    removeCookie('userId', { path: '/labels' })
+    removeCookie('user', { path: '/' })
     Router.push('/')
   }
   if (auth) {

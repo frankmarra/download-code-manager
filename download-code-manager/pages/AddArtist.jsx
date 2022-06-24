@@ -9,7 +9,7 @@ const AddArtist = () => {
     name: '',
     url: ''
   })
-  const [artistAdded, setArtistAdded] = useState(false)
+  const [artistAdded, toggleArtistAdded] = useState(false)
   const [newArtist, setNewArtist] = useState()
   const router = useRouter()
 
@@ -20,12 +20,12 @@ const AddArtist = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await axios.post(
-      `http://localhost:3001/api/labels/${cookies.user.id}`,
+      `http://localhost:3001/api/labels/${cookies.user.user.labelId}`,
       formValues
     )
     setNewArtist(res.data)
     setFormValues({ name: '', url: '' })
-    setArtistAdded(true)
+    toggleArtistAdded(true)
   }
 
   return artistAdded ? (
@@ -36,14 +36,14 @@ const AddArtist = () => {
         <p>Would you like to add another artist?</p>
         <button
           onClick={() => {
-            setArtistAdded(false)
+            toggleArtistAdded(false)
           }}
         >
           Add Another Artist
         </button>
         <button
           onClick={() => {
-            router.push(`/labels/${cookies.user.id}`)
+            router.push(`/labels/${cookies.user.user.labelId}`)
           }}
         >
           Home
@@ -67,7 +67,7 @@ const AddArtist = () => {
             />
           </div>
           <div className="input-wrapper">
-            <label htmlFor="url">Arist Url</label>
+            <label htmlFor="url">Artist Url</label>
             <input
               onChange={handleChange}
               name="url"

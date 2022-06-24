@@ -72,8 +72,11 @@ const CodeGenerator = ({ artists, redeemLink }) => {
         {formValues.album != '' ? (
           clicked ? (
             <h4>Your Code:</h4>
-          ) : (
+          ) : artists[formValues.artist - 1].Albums[formValues.album - 1].Codes
+              .length > 0 ? (
             <button type="submit">Get Code!</button>
+          ) : (
+            <h6>No Codes For This Album</h6>
           )
         ) : (
           <div></div>

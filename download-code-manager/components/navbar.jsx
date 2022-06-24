@@ -3,10 +3,10 @@ import { useCookies } from 'react-cookie'
 import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
-const Nav = ({ cookies, removeCookie }) => {
-  //const [cookies, setCookie, removeCookie] = useCookies('user')
+const Nav = () => {
+  const [cookies, removeCookie] = useCookies('user')
   const [auth, setAuth] = useState(false)
-
+  const router = useRouter()
   useEffect(() => {
     if (cookies) {
       if (cookies.user) {
@@ -14,23 +14,45 @@ const Nav = ({ cookies, removeCookie }) => {
       }
     }
   }, [])
-  let authenticatedOptions
+
   const handleLogout = () => {
     removeCookie('user', { path: '/' })
-    Router.push('/')
+    router.push('/')
   }
-  if (auth) {
-    authenticatedOptions = (
-      <ul className="nav-bar">
-        <Link href="/AddArtist">
-          <a>
-            <li>Add Artist</li>
-          </a>
-        </Link>
-        <li onClick={() => handleLogout()}>Log out</li>
-      </ul>
-    )
-  }
+
+  const authenticatedOptions = (
+    <ul className="nav-bar">
+      <Link href="/AddArtist">
+        <a>
+          <li>Add Artist</li>
+        </a>
+      </Link>
+      <li onClick={() => handleLogout()}>Log out</li>
+    </ul>
+  )
+
+  const adminOptions = (
+    <ul className="nav-bar">
+      <Link href="/AddArtist">
+        <a>
+          <li>Add Artist</li>
+        </a>
+      </Link>
+
+      <Link href="/AddLabel">
+        <a>
+          <li>Add Label</li>
+        </a>
+      </Link>
+      <Link href="/AddUser">
+        <a>
+          <li>Add User</li>
+        </a>
+      </Link>
+
+      <li onClick={() => handleLogout()}>Log out</li>
+    </ul>
+  )
 
   const publicOptions = (
     <ul className="nav-bar">
@@ -42,6 +64,14 @@ const Nav = ({ cookies, removeCookie }) => {
     </ul>
   )
 
-  return <nav>{auth ? authenticatedOptions : publicOptions}</nav>
+  return (
+    <nav>
+      {auth
+        ? cookies.user.user.isAdmin
+          ? adminOptions
+          : authenticatedOptions
+        : publicOptions}
+    </nav>
+  )
 }
 export default Nav

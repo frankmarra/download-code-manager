@@ -4,55 +4,65 @@ import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 const Nav = () => {
-  const [cookies, removeCookie] = useCookies('user')
+  const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const [auth, setAuth] = useState(false)
+  const [user, setUser] = useState()
   const router = useRouter()
   useEffect(() => {
-    if (cookies) {
-      if (cookies.user) {
-        setAuth(true)
-      }
+    if (cookies.user) {
+      setAuth(true)
+      setUser(cookies.user.user)
     }
-  }, [])
-
+  }, [cookies])
+  let authenticatedOptions
+  let adminOptions
   const handleLogout = () => {
     removeCookie('user', { path: '/' })
-    router.push('/')
+    router.reload()
   }
+  if (auth) {
+    authenticatedOptions = (
+      <ul className="nav-bar">
+        <li>Hello {user.name}</li>
+        <Link href="/AddArtist">
+          <a>
+            <li>Add Artist</li>
+          </a>
+        </Link>
+        <Link href="/">
+          <a>
+            <li onClick={() => handleLogout()}>Log out</li>
+          </a>
+        </Link>
+      </ul>
+    )
 
-  const authenticatedOptions = (
-    <ul className="nav-bar">
-      <Link href="/AddArtist">
-        <a>
-          <li>Add Artist</li>
-        </a>
-      </Link>
-      <li onClick={() => handleLogout()}>Log out</li>
-    </ul>
-  )
+    adminOptions = (
+      <ul className="nav-bar">
+        <Link href="/AddArtist">
+          <a>
+            <li>Add Artist</li>
+          </a>
+        </Link>
 
-  const adminOptions = (
-    <ul className="nav-bar">
-      <Link href="/AddArtist">
-        <a>
-          <li>Add Artist</li>
-        </a>
-      </Link>
-
-      <Link href="/AddLabel">
-        <a>
-          <li>Add Label</li>
-        </a>
-      </Link>
-      <Link href="/AddUser">
-        <a>
-          <li>Add User</li>
-        </a>
-      </Link>
-
-      <li onClick={() => handleLogout()}>Log out</li>
-    </ul>
-  )
+        <Link href="/AddLabel">
+          <a>
+            <li>Add Label</li>
+          </a>
+        </Link>
+        <Link href="/AddUser">
+          <a>
+            <li>Add User</li>
+          </a>
+        </Link>
+        <Link href="/">
+          <a>
+            <li onClick={() => handleLogout()}>Log out</li>
+          </a>
+        </Link>
+      </ul>
+    )
+  }
 
   const publicOptions = (
     <ul className="nav-bar">
@@ -67,7 +77,7 @@ const Nav = () => {
   return (
     <nav>
       {auth
-        ? cookies.user.user.isAdmin
+        ? user.isAdmin
           ? adminOptions
           : authenticatedOptions
         : publicOptions}

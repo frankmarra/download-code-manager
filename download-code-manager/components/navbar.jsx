@@ -34,6 +34,11 @@ const Nav = () => {
             <li>Add Artist</li>
           </a>
         </Link>
+        <Link href="/AddAlbum">
+          <a>
+            <li>Add Album</li>
+          </a>
+        </Link>
         <Link href="/UpdateLabel">
           <a>
             <li>Update Label</li>

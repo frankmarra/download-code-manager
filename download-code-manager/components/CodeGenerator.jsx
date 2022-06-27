@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const CodeGenerator = ({ artists, redeemLink }) => {
+const CodeGenerator = ({ artists, redeemLink, labelId }) => {
   const [randomCode, setRandomCode] = useState()
   const [clicked, setClicked] = useState(false)
   const [formValues, setFormValues] = useState({
@@ -14,7 +14,11 @@ const CodeGenerator = ({ artists, redeemLink }) => {
       if (randomCode) {
         let codeId = parseInt(randomCode.id)
         await axios.put(
-          `http://localhost:3001/api/labels/1/artists/${formValues.artist}/albums/${formValues.album}/codes/${codeId}`,
+          `http://localhost:3001/api/labels/${labelId}/artists/${
+            artists[formValues.artist]
+          }/albums/${
+            artists[formValues.artist].Albums[formValues.album].id
+          }/codes/${codeId}`,
           { used: true }
         )
       }
@@ -30,7 +34,9 @@ const CodeGenerator = ({ artists, redeemLink }) => {
     const res = await axios.get(
       `http://localhost:3001/api/labels/1/artists/${
         artists[formValues.artist].id
-      }/albums/${formValues.album}/codes/unused`
+      }/albums/${
+        artists[formValues.artist].Albums[formValues.album].id
+      }/codes/unused`
     )
     let randomNumber = Math.floor(Math.random() * res.data.length)
     setRandomCode(res.data[randomNumber])
@@ -88,7 +94,9 @@ const CodeGenerator = ({ artists, redeemLink }) => {
         <div className="random-code">
           {randomCode.albumCode}
           <div className="redeem-link">
-            <a href={redeemLink}>Redeem Here</a>
+            <a href={redeemLink} target="_blank">
+              Redeem Here
+            </a>
           </div>
         </div>
       ) : (

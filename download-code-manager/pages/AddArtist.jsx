@@ -3,6 +3,14 @@ import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
 
+// export async function getServerSideProps(context) {
+//   const cookies = context.req.cookies['user']
+
+//   return {
+//     props: { user: cookies.user }
+//   }
+// }
+
 const AddArtist = () => {
   const [cookies] = useCookies(['user'])
   const [formValues, setFormValues] = useState({

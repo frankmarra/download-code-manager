@@ -70,6 +70,7 @@ export default function LabelPage({ label }) {
           <div>
             <h3>Get Code</h3>
             <CodeGenerator
+              labelId={label.id}
               artists={label.Artists}
               redeemLink={label.redeemLink}
             />

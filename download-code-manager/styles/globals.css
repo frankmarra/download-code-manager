@@ -23,23 +23,36 @@ nav {
   flex-flow: row;
   justify-content: flex-end;
   font-size: 1.5rem;
+  padding-right: 3vw;
 }
 
 
 .nav-bar {
-  width: 20%;
+
   display: flex;
   flex-flow: row;
   justify-content: space-between;
   list-style-type: none;
 }
 
+.nav-bar li {
+  margin-right: 1vw;
+}
+
+
+
 main {
   width: 100%;
 }
 
-section {
+section, .signin-form-wrapper, .signin-form, .add-artist-form-wrapper, .add-new-artist-form, .add-label-form-wrapper, .add-new-label-form, .add-user-form-wrapper, .add-new-user-form, .add-album-form-wrapper, .add-new-album-form, .update-label-form-wrapper, .update-label-form  {
   display: flex;
   flex-flow: column;
   align-items: center;
+}
+
+.input-wrapper {
+  margin: 1vh 0;
+  display: flex;
+  flex-flow: column;
 }

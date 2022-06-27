@@ -43,7 +43,7 @@ export default function LabelPage({ label }) {
         <title>{label.name}</title>
       </Head>
       <header>
-        <Nav cookies={cookies} removeCookie={removeCookie} />
+        <Nav />
       </header>
       <section>
         <a href={label.url}>

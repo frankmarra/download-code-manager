@@ -3,6 +3,7 @@ import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { parseCookies } from '../helpers'
+import Nav from '../components/navbar'
 
 // export async function getServerSideProps({ req }) {
 //   const data = parseCookies(req)
@@ -52,8 +53,9 @@ const UpdateLabel = () => {
   }
 
   return (
-    label && (
-      <div className="update-label-page">
+    <div className="update-label-page">
+      <Nav />
+      {label && (
         <div className="update-label-form-wrapper">
           <h1>Update {`${label.name}`}</h1>
           <form className="update-label-form" onSubmit={handleSubmit}>
@@ -99,8 +101,8 @@ const UpdateLabel = () => {
             </button>
           </form>
         </div>
-      </div>
-    )
+      )}
+    </div>
   )
 }
 

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
+import Nav from '../components/navbar'
 
 const AddLabel = () => {
   const [cookies] = useCookies(['user'])
@@ -23,56 +24,57 @@ const AddLabel = () => {
     toggleLabelAdded(true)
   }
 
-  return labelAdded ? (
+  return (
     <div className="add-label-page">
-      <div className="label-added-wrapper">
-        <h1>New Label Added</h1>
-        <p>A label with the name {`${newLabel.name}`} was created.</p>
-        <p>Would you like to add another label?</p>
-        <button
-          onClick={() => {
-            toggleLabelAdded(false)
-          }}
-        >
-          Add Another Label
-        </button>
-      </div>
-    </div>
-  ) : (
-    <div className="add-label-page">
-      <div className="add-label-form-wrapper">
-        <h1>Add New Label</h1>
-        <form className="add-new-label-form" onSubmit={handleSubmit}>
-          <div className="input-wrapper">
-            <label htmlFor="name">Label Name:</label>
-            <input
-              onChange={handleChange}
-              name="name"
-              type="text"
-              placeholder="Enter Label Name"
-              value={formValues.name}
-              required
-            />
-          </div>
-          <div className="input-wrapper">
-            <label htmlFor="email">Label E-mail:</label>
-            <input
-              onChange={handleChange}
-              name="email"
-              type="email"
-              value={formValues.email}
-              required
-            />
-          </div>
+      <Nav />
+      {labelAdded ? (
+        <div className="label-added-wrapper">
+          <h1>New Label Added</h1>
+          <p>A label with the name {`${newLabel.name}`} was created.</p>
+          <p>Would you like to add another label?</p>
           <button
-            type="submit"
-            className="add-label-button"
-            disabled={!formValues.name || !formValues.email}
+            onClick={() => {
+              toggleLabelAdded(false)
+            }}
           >
-            Add Label
+            Add Another Label
           </button>
-        </form>
-      </div>
+        </div>
+      ) : (
+        <div className="add-label-form-wrapper">
+          <h1>Add New Label</h1>
+          <form className="add-new-label-form" onSubmit={handleSubmit}>
+            <div className="input-wrapper">
+              <label htmlFor="name">Label Name:</label>
+              <input
+                onChange={handleChange}
+                name="name"
+                type="text"
+                placeholder="Enter Label Name"
+                value={formValues.name}
+                required
+              />
+            </div>
+            <div className="input-wrapper">
+              <label htmlFor="email">Label E-mail:</label>
+              <input
+                onChange={handleChange}
+                name="email"
+                type="email"
+                value={formValues.email}
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="add-label-button"
+              disabled={!formValues.name || !formValues.email}
+            >
+              Add Label
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   )
 }

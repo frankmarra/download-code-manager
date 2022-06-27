@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
+import Nav from '../components/navbar'
 
 // export async function getServerSideProps(context) {
 //   const cookies = context.req.cookies['user']
@@ -51,80 +52,81 @@ const AddAlbum = () => {
     toggleAlbumAdded(true)
   }
 
-  return label ? (
-    albumAdded ? (
-      <div className="add-album-page">
-        <div className="album-added-wrapper">
-          <h1>New Album Added</h1>
-          <p>A new album with the name {`${newAlbum.name}`} was added.</p>
-          <p>Would you like to add another album?</p>
-          <button
-            onClick={() => {
-              toggleAlbumAdded(false)
-            }}
-          >
-            Add Another Album
-          </button>
-          <button
-            onClick={() => {
-              router.push(`/labels/${cookies.user.user.labelId}`)
-            }}
-          >
-            Home
-          </button>
-        </div>
-      </div>
-    ) : (
-      <div className="add-album-page">
-        <div className="add-album-form-wrapper">
-          <h1>Add New Album</h1>
-          <form className="add-new-album-form" onSubmit={handleSubmit}>
-            <div className="input-wrapper">
-              <label htmlFor="artistId">Artist:</label>
-              <select name="artistId" onChange={handleChange}>
-                <option value="">--Please choose an artist--</option>
-                {label.Artists.map((artist, index) => (
-                  <option key={index} value={artist.id}>
-                    {artist.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            {formValues.artist != '' ? (
-              <div className="input-wrapper">
-                <label htmlFor="name">Album Name</label>
-                <input
-                  onChange={handleChange}
-                  name="name"
-                  type="text"
-                  placeholder="Enter Album Name"
-                  value={formValues.name}
-                  required
-                />
-              </div>
-            ) : (
-              <div>Please select an artist to add an album to.</div>
-            )}
+  return (
+    <div className="add-album-page">
+      <Nav />
+      {label ? (
+        albumAdded ? (
+          <div className="album-added-wrapper">
+            <h1>New Album Added</h1>
+            <p>A new album with the name {`${newAlbum.name}`} was added.</p>
+            <p>Would you like to add another album?</p>
             <button
-              type="submit"
-              className="add-album-button"
-              disabled={!formValues.name && !formValues.artistId}
+              onClick={() => {
+                toggleAlbumAdded(false)
+              }}
             >
-              Add Album
+              Add Another Album
             </button>
-          </form>
-          <button
-            onClick={() => {
-              router.push(`/labels/${cookies.user.user.labelId}`)
-            }}
-          >
-            Home
-          </button>
-        </div>
-      </div>
-    )
-  ) : (
-    <div>Loading...</div>
+            <button
+              onClick={() => {
+                router.push(`/labels/${cookies.user.user.labelId}`)
+              }}
+            >
+              Home
+            </button>
+          </div>
+        ) : (
+          <div className="add-album-form-wrapper">
+            <h1>Add New Album</h1>
+            <form className="add-new-album-form" onSubmit={handleSubmit}>
+              <div className="input-wrapper">
+                <label htmlFor="artistId">Artist:</label>
+                <select name="artistId" onChange={handleChange}>
+                  <option value="">--Please choose an artist--</option>
+                  {label.Artists.map((artist, index) => (
+                    <option key={index} value={artist.id}>
+                      {artist.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {formValues.artist != '' ? (
+                <div className="input-wrapper">
+                  <label htmlFor="name">Album Name</label>
+                  <input
+                    onChange={handleChange}
+                    name="name"
+                    type="text"
+                    placeholder="Enter Album Name"
+                    value={formValues.name}
+                    required
+                  />
+                </div>
+              ) : (
+                <div>Please select an artist to add an album to.</div>
+              )}
+              <button
+                type="submit"
+                className="add-album-button"
+                disabled={!formValues.name && !formValues.artistId}
+              >
+                Add Album
+              </button>
+            </form>
+            <button
+              onClick={() => {
+                router.push(`/labels/${cookies.user.user.labelId}`)
+              }}
+            >
+              Home
+            </button>
+          </div>
+        )
+      ) : (
+        <div>Loading...</div>
+      )}
+    </div>
   )
 }
 

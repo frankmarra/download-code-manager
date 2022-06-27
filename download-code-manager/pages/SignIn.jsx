@@ -3,6 +3,7 @@ import { SignInUser } from '../services/Auth'
 import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
+import Nav from '../components/navbar'
 
 const SignIn = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
@@ -30,6 +31,7 @@ const SignIn = () => {
 
   return (
     <div className="signin-page">
+      <Nav />
       <div className="signin-form-wrapper">
         <h1>Log-In</h1>
         <form className="signin-form" onSubmit={handleSubmit}>

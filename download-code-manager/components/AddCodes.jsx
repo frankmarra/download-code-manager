@@ -22,13 +22,16 @@ const AddCodes = ({ artists }) => {
       let newCode = {
         albumId: formValues.album,
         albumCode: code,
-        used: false
+        used: false,
+        artistId: artists[formValues.artist].id
       }
       codeArray.push(newCode)
     })
     setCodes(codeArray)
     await axios.post(
-      `http://localhost:3001/api/labels/1/artists/${formValues.artist}/albums/${formValues.album}/create-codes`,
+      `http://localhost:3001/api/labels/1/artists/${
+        artists[formValues.artist].id
+      }/albums/${formValues.album}/create-codes`,
       codes
     )
     setCodesAdded(true)
@@ -57,25 +60,27 @@ const AddCodes = ({ artists }) => {
           <label htmlFor="artist">Artist</label>
           <select name="artist" onChange={handleChange}>
             <option value="">--Please choose an artist--</option>
-            {artists.map((artist) => (
-              <option value={artist.id}>{artist.name}</option>
+            {artists.map((artist, index) => (
+              <option key={index} value={index}>
+                {artist.name}
+              </option>
             ))}
           </select>
         </div>
-        {formValues.artist != '' ? (
+        {formValues.artist && artists[formValues.artist].Albums.length > 0 ? (
           <div className="input-wrapper">
             <label htmlFor="album">Album</label>
             <select name="album" onChange={handleChange}>
               <option value="">--Please choose an album--</option>
-              {artists[formValues.artist - 1].Albums.map((album) => (
+              {artist.Albums.map((album) => (
                 <option value={album.id}>{album.name}</option>
               ))}
             </select>
           </div>
         ) : (
-          <div></div>
+          <div>This artist has no albums</div>
         )}
-        {formValues.album != '' ? (
+        {formValues.album ? (
           <div className="input-wrapper">
             <label htmlFor="albumCodes">Codes</label>
             <textarea

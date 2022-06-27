@@ -82,14 +82,14 @@ const AddArtist = () => {
           >
             Add Artist
           </button>
-          <button
-            onClick={() => {
-              router.push(`/labels/${cookies.user.id}`)
-            }}
-          >
-            Home
-          </button>
         </form>
+        <button
+          onClick={() => {
+            router.push(`/labels/${cookies.user.user.labelId}`)
+          }}
+        >
+          Home
+        </button>
       </div>
     </div>
   )

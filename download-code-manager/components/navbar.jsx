@@ -24,9 +24,19 @@ const Nav = () => {
     authenticatedOptions = (
       <ul className="nav-bar">
         <li>Hello {user.name}</li>
+        <Link href={`/labels/${user.labelId}`}>
+          <a>
+            <li>Label Page</li>
+          </a>
+        </Link>
         <Link href="/AddArtist">
           <a>
             <li>Add Artist</li>
+          </a>
+        </Link>
+        <Link href="/UpdateLabel">
+          <a>
+            <li>Update Label</li>
           </a>
         </Link>
         <Link href="/">

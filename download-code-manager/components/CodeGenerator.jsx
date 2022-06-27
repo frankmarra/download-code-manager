@@ -13,7 +13,6 @@ const CodeGenerator = ({ artists, redeemLink }) => {
     const removeCode = async () => {
       if (randomCode) {
         let codeId = parseInt(randomCode.id)
-        console.log('codeId:', codeId)
         await axios.put(
           `http://localhost:3001/api/labels/1/artists/${formValues.artist}/albums/${formValues.album}/codes/${codeId}`,
           { used: true }
@@ -29,7 +28,9 @@ const CodeGenerator = ({ artists, redeemLink }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await axios.get(
-      `http://localhost:3001/api/labels/1/artists/${formValues.artist}/albums/${formValues.album}/codes/unused`
+      `http://localhost:3001/api/labels/1/artists/${
+        artists[formValues.artist].id
+      }/albums/${formValues.album}/codes/unused`
     )
     let randomNumber = Math.floor(Math.random() * res.data.length)
     setRandomCode(res.data[randomNumber])
@@ -48,32 +49,33 @@ const CodeGenerator = ({ artists, redeemLink }) => {
           <select name="artist" onChange={handleChange}>
             <option value="">--Please choose an artist--</option>
             {artists.map((artist, index) => (
-              <option key={index} value={artist.id}>
+              <option key={index} value={index}>
                 {artist.name}
               </option>
             ))}
           </select>
         </div>
-        {formValues.artist != '' ? (
+        {formValues.artist != '' &&
+        artists[formValues.artist].Albums.length > 0 ? (
           <div className="input-wrapper">
             <label htmlFor="album">Album</label>
             <select name="album" onChange={handleChange}>
               <option value="">--Please choose and album--</option>
-              {artists[formValues.artist - 1].Albums.map((album, index) => (
-                <option key={index} value={album.id}>
+              {artists[formValues.artist].Albums.map((album, index) => (
+                <option key={index} value={index}>
                   {album.name}
                 </option>
               ))}
             </select>
           </div>
         ) : (
-          <div></div>
+          <div>This artist has no albums</div>
         )}
         {formValues.album != '' ? (
           clicked ? (
             <h4>Your Code:</h4>
-          ) : artists[formValues.artist - 1].Albums[formValues.album - 1].Codes
-              .length > 0 ? (
+          ) : artists[formValues.artist].Albums[formValues.album].Codes.length >
+            0 ? (
             <button type="submit">Get Code!</button>
           ) : (
             <h6>No Codes For This Album</h6>

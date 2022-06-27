@@ -19,7 +19,6 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const payload = await SignInUser(formValues)
-    console.log(payload)
     setCookie('user', payload, { path: '/' })
     setFormValues({ email: '', password: '' })
     if (!payload.user.labelId) {

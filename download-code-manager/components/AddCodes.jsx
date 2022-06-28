@@ -1,14 +1,36 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useCookies } from 'react-cookie'
 
 const AddCodes = ({ artists }) => {
+  const [cookies] = useCookies(['user'])
   const [codes, setCodes] = useState([])
   const [codesAdded, setCodesAdded] = useState(false)
+  const [codeTotals, setCodeTotals] = useState({
+    unusedTotal: 0,
+    usedTotal: 0
+  })
   const [formValues, setFormValues] = useState({
     artist: '',
     album: '',
     albumCodes: ''
   })
+
+  useEffect(() => {
+    const getCodeTotals = async () => {
+      if (formValues.album) {
+        const res = await axios.get(
+          `http://localhost:3001/api/labels/${
+            cookies.user.user.labelId
+          }/artists/${artists[formValues.artist].id}/albums/${formValues.album}`
+        )
+        const totals = res.data
+        setCodeTotals(totals)
+      }
+    }
+
+    getCodeTotals()
+  }, [formValues])
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
@@ -25,7 +47,6 @@ const AddCodes = ({ artists }) => {
         used: false
         // artistId: artists[formValues.artist].id
       }
-      console.log('newCode', newCode)
       codeArray.push(newCode)
     })
     setCodes(codeArray)
@@ -87,6 +108,16 @@ const AddCodes = ({ artists }) => {
         )}
         {formValues.album ? (
           <div className="input-wrapper">
+            <div className="code-totals">
+              <div className="unused-codes">
+                <h5>Codes Remaining: </h5>
+                <p>{codeTotals.unusedTotal}</p>
+              </div>
+              <div className="used-codes">
+                <h5>Codes Redeemed: </h5>
+                <p>{codeTotals.usedTotal}</p>
+              </div>
+            </div>
             <label htmlFor="albumCodes">Codes</label>
             <textarea
               name="albumCodes"

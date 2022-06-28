@@ -56,3 +56,15 @@ section, .signin-form-wrapper, .signin-form, .add-artist-form-wrapper, .add-new-
   display: flex;
   flex-flow: column;
 }
+
+.code-totals {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.unused-codes, .used-codes {
+  display: flex;
+  align-items: center;
+
+}

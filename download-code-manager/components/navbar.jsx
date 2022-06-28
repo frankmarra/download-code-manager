@@ -18,7 +18,8 @@ const Nav = () => {
   let adminOptions
   const handleLogout = () => {
     removeCookie('user', { path: '/' })
-    router.reload()
+
+    router.push('/')
   }
   if (auth) {
     authenticatedOptions = (

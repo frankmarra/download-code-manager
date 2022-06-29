@@ -55,20 +55,20 @@ export default function LabelPage({ label }) {
                 : `/download-code-manager/public/images/pexels-hermaion-104084.jpeg`
             }
             className={utilStyles.labelLogo}
-            height={300}
-            width={300}
+            height={200}
+            width={200}
             alt={label.name}
           />
         </a>
         <h1 className={utilStyles.labelName}>{label.name}</h1>
         {auth ? (
-          <div>
+          <div className="add-codes">
             <h2>Add Codes</h2>
             <AddCodes artists={label.Artists} />
           </div>
         ) : (
-          <div>
-            <h3>Get Code</h3>
+          <div className="code-generator">
+            <h3>Generate Album Code:</h3>
             <CodeGenerator
               labelId={label.id}
               artists={label.Artists}

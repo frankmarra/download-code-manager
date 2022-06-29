@@ -43,6 +43,14 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
     setClicked(true)
   }
 
+  const copyToClipboard = async (code) => {
+    if ('clipboard' in navigator) {
+      return await navigator.clipboard.writeText(code)
+    } else {
+      return document.execCommand('copy', true, code)
+    }
+  }
+
   return (
     <div className="artist-album-select-wrapper">
       <form
@@ -75,24 +83,35 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
             </select>
           </div>
         ) : (
-          <div>This artist has no albums</div>
+          <div></div>
         )}
         {formValues.album != '' ? (
           clicked ? (
             <h4>Your Code:</h4>
           ) : artists[formValues.artist].Albums[formValues.album].Codes.length >
             0 ? (
-            <button type="submit">Get Code!</button>
+            <button className="get-code-button" type="submit">
+              Generate Code
+            </button>
           ) : (
-            <h6>No Codes For This Album</h6>
+            <h4>No Codes For This Album</h4>
           )
         ) : (
           <div></div>
         )}
       </form>
       {randomCode ? (
-        <div className="random-code">
-          {randomCode.albumCode}
+        <div className="random-code-wrapper">
+          <div className="random-code">
+            {randomCode.albumCode}
+            <button
+              className="copy-code-button"
+              onClick={() => copyToClipboard(randomCode.albumCode)}
+            >
+              Copy to Clipboard
+            </button>
+          </div>
+
           <div className="redeem-link">
             <a href={redeemLink} target="_blank">
               Redeem Here
@@ -100,7 +119,9 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
           </div>
         </div>
       ) : (
-        <div>Please choose an artist and album to generate a code</div>
+        <div>
+          <h4>Please choose an artist and album to generate a code</h4>
+        </div>
       )}
     </div>
   )

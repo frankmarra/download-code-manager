@@ -22,7 +22,9 @@ const AddCodes = ({ artists }) => {
         const res = await axios.get(
           `http://localhost:3001/api/labels/${
             cookies.user.user.labelId
-          }/artists/${artists[formValues.artist].id}/albums/${formValues.album}`
+          }/artists/${artists[formValues.artist].id}/albums/${
+            formValues.album
+          }/codes`
         )
         const totals = res.data
         setCodeTotals(totals)

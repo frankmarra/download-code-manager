@@ -17,7 +17,8 @@ const AddUser = ({ labels }) => {
     lastName: '',
     email: '',
     password: '',
-    labelId: 0
+    labelId: 0,
+    artistId: 0
   })
   const [userAdded, toggleUserAdded] = useState(false)
   const [newUser, setNewUser] = useState()
@@ -39,7 +40,8 @@ const AddUser = ({ labels }) => {
       email: '',
       password: '',
       passwordCheck: '',
-      labelId: 0
+      labelId: 0,
+      artistId: 0
     })
     toggleUserAdded(true)
   }

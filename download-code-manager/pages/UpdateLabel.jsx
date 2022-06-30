@@ -5,20 +5,22 @@ import { useRouter } from 'next/router'
 import { parseCookies } from '../helpers'
 import Nav from '../components/navbar'
 
-// export async function getServerSideProps({ req }) {
-//   const data = parseCookies(req)
+export async function getServerSideProps({ req }) {
+  const cookieString = parseCookies(req)
+  const cookies = JSON.parse(cookieString.user)
 
-//   const response = await axios.get(
-//     `http://localhost:3001/api/labels/${data.user.user.labelId}`
-//   )
-//   const label = response.data
+  const res = await axios.get(
+    `http://localhost:3001/api/labels/${cookies.user.labelId}`
+  )
+  const label = res.data
 
-//   return { data: data && data }
-//}
+  return {
+    props: { user: cookies, label: label }
+  }
+}
 
-const UpdateLabel = () => {
+const UpdateLabel = ({ user, label }) => {
   const [cookies] = useCookies(['user'])
-  const [label, setLabel] = useState()
   const [formValues, setFormValues] = useState({
     email: label ? label.email : '',
     url: label ? label.url : '',
@@ -27,18 +29,6 @@ const UpdateLabel = () => {
   })
   const router = useRouter()
 
-  useEffect(() => {
-    const getLabel = async () => {
-      const res = await axios.get(
-        `http://localhost:3001/api/labels/${cookies.user.user.labelId}`
-      )
-      const label = res.data
-      setLabel(label)
-      console.log('label', label)
-    }
-    getLabel()
-  }, [])
-
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
@@ -46,10 +36,12 @@ const UpdateLabel = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await axios.put(
-      `http://localhost:3001/api/labels/${cookies.user.user.labelId}`,
+      `http://localhost:3001/api/labels/${user.user.labelId}`,
       formValues
     )
-    router.push(`/labels/${cookies.user.user.labelId}`)
+    user.user.labelId == null
+      ? router.push('/')
+      : router.push(`/labels/${user.user.labelId}`)
   }
 
   return (

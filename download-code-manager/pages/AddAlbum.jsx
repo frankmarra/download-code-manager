@@ -3,18 +3,17 @@ import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import Nav from '../components/navbar'
+import { parseCookies } from '../helpers'
 
-// export async function getServerSideProps(context) {
-//   const cookies = context.req.cookies['user']
+export async function getServerSideProps({ req }) {
+  const cookies = parseCookies(req)
 
-//   return {
-//     props: {
-//       user: cookies.user
-//     }
-//   }
-// }
+  return {
+    props: { user: JSON.parse(cookies.user) }
+  }
+}
 
-const AddAlbum = () => {
+const AddAlbum = ({ user }) => {
   const [cookies] = useCookies(['user'])
   const [formValues, setFormValues] = useState({
     name: '',
@@ -28,11 +27,10 @@ const AddAlbum = () => {
   useEffect(() => {
     const getLabel = async () => {
       const res = await axios.get(
-        `http://localhost:3001/api/labels/${cookies.user.user.labelId}`
+        `http://localhost:3001/api/labels/${user.user.labelId}`
       )
       const label = res.data
       setLabel(label)
-      console.log('label', label)
     }
     getLabel()
   }, [])
@@ -44,7 +42,7 @@ const AddAlbum = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await axios.post(
-      `http://localhost:3001/api/labels/${cookies.user.user.labelId}/artists/${formValues.artistId}`,
+      `http://localhost:3001/api/labels/${user.user.labelId}/artists/${formValues.artistId}`,
       formValues
     )
     setNewAlbum(res.data)
@@ -70,7 +68,9 @@ const AddAlbum = () => {
             </button>
             <button
               onClick={() => {
-                router.push(`/labels/${cookies.user.user.labelId}`)
+                user.user.labelId == null
+                  ? router.push('/')
+                  : router.push(`/labels/${user.user.labelId}`)
               }}
             >
               Home
@@ -116,7 +116,9 @@ const AddAlbum = () => {
             </form>
             <button
               onClick={() => {
-                router.push(`/labels/${cookies.user.user.labelId}`)
+                user.user.labelId == null
+                  ? router.push('/')
+                  : router.push(`/labels/${user.user.labelId}`)
               }}
             >
               Home

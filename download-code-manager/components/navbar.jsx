@@ -45,6 +45,16 @@ const Nav = () => {
             <li>Update Label</li>
           </a>
         </Link>
+        <Link href="/UpdateArtist">
+          <a>
+            <li>Update Artist</li>
+          </a>
+        </Link>
+        <Link href="/UpdateAlbum">
+          <a>
+            <li>Update Album</li>
+          </a>
+        </Link>
         <Link href="/">
           <a>
             <li onClick={() => handleLogout()}>Log out</li>
@@ -69,6 +79,16 @@ const Nav = () => {
         <Link href="/AddUser">
           <a>
             <li>Add User</li>
+          </a>
+        </Link>
+        <Link href="/UpdateArtist">
+          <a>
+            <li>Update Artist</li>
+          </a>
+        </Link>
+        <Link href="/UpdateAlbum">
+          <a>
+            <li>Update Album</li>
           </a>
         </Link>
         <Link href="/">

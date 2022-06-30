@@ -85,6 +85,8 @@ section, .signin-form-wrapper, .signin-form, .add-artist-form-wrapper, .add-new-
 }
 
 .random-code {
+  display: flex;
+  flex-flow: column;
   font-size: 1.2rem;
   font-weight: bold;
   letter-spacing: 0.025rem;

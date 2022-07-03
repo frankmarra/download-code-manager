@@ -52,7 +52,6 @@ const AddAlbum = ({ user }) => {
 
   return (
     <div className="add-album-page">
-      <Nav />
       {label ? (
         albumAdded ? (
           <div className="album-added-wrapper">

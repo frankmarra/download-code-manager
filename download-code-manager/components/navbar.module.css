@@ -1,0 +1,21 @@
+.greeting {
+  display: flex;
+}
+
+.nav {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+}
+
+.navbar {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(var(--space-xs), 1rem + 2vw, var(--space-md));
+  flex-flow: row;
+  justify-content: space-between;
+  list-style-type: none;
+}

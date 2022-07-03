@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import Nav from '../components/navbar'
+import Layout from '../components/layout'
 
 const SignIn = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
@@ -14,7 +15,7 @@ const SignIn = () => {
   const router = useRouter()
 
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+    setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
@@ -30,18 +31,19 @@ const SignIn = () => {
   }
 
   return (
-    <div className="signin-page">
-      <Nav />
-      <div className="signin-form-wrapper">
-        <h1>Log-In</h1>
-        <form className="signin-form" onSubmit={handleSubmit}>
+    <section className="form-container">
+      <div id="signin-form-wrapper" className="u-flex-column u-flow">
+        <h1>Sign In</h1>
+        <form
+          className="signin-form u-flex-column u-flow"
+          onSubmit={handleSubmit}
+        >
           <div className="input-wrapper">
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email">Email</label>
             <input
               onChange={handleChange}
-              name="email"
+              id="email"
               type="email"
-              placeholder="Enter Email"
               value={formValues.email}
               required
             />
@@ -50,7 +52,7 @@ const SignIn = () => {
             <label htmlFor="password">Password</label>
             <input
               onChange={handleChange}
-              name="password"
+              id="password"
               type="password"
               value={formValues.password}
               required
@@ -58,14 +60,14 @@ const SignIn = () => {
           </div>
           <button
             type="submit"
-            className="signin-button"
+            className="btn primary"
             disabled={!formValues.email || !formValues.password}
           >
             Sign In
           </button>
         </form>
       </div>
-    </div>
+    </section>
   )
 }
 

@@ -7,7 +7,6 @@ import CodeGenerator from '../../components/CodeGenerator'
 import AddCodes from '../../components/AddCodes'
 import { useCookies } from 'react-cookie'
 import { useEffect, useState } from 'react'
-import Nav from '../../components/navbar'
 
 export async function getStaticPaths() {
   const res = await axios.get(`http://localhost:3001/api/labels`)
@@ -38,21 +37,16 @@ export default function LabelPage({ label }) {
   }, [label])
 
   return label ? (
-    <Layout>
+    <>
       <Head>
         <title>{label.name}</title>
       </Head>
-      <header>
-        <Nav />
-      </header>
-      <section>
+      <section className="u-flex-column">
         <a href={label.url}>
           <Image
             priority
             src={
-              label.logo
-                ? label.logo
-                : `/download-code-manager/public/images/pexels-hermaion-104084.jpeg`
+              label.logo ? label.logo : `/images/pexels-hermaion-104084.jpeg`
             }
             className={utilStyles.labelLogo}
             height={200}
@@ -67,7 +61,7 @@ export default function LabelPage({ label }) {
             <AddCodes artists={label.Artists} />
           </div>
         ) : (
-          <div className="code-generator">
+          <div className="code-generator u-flow">
             <h3>Generate Album Code:</h3>
             <CodeGenerator
               labelId={label.id}
@@ -77,7 +71,7 @@ export default function LabelPage({ label }) {
           </div>
         )}
       </section>
-    </Layout>
+    </>
   ) : (
     <div>Loading...</div>
   )

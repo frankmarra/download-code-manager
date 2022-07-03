@@ -1,9 +1,28 @@
-.mainWrapper {
+.wrapper {
+  min-height: 100vh;
   margin: auto;
   width: 100%;
   border-radius: 10px;
   display: flex;
   flex-flow: column;
   align-items: center;
+}
+
+.header {
+  display: flex;
+  font-size: clamp(1rem, 1rem + 1vw, 1.25rem);
+  align-items: center;
+  background-color: black;
+  color: white;
+  width: 100%;
+  padding: var(--space-sm);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 2rem;
 }
 

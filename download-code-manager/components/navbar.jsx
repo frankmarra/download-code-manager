@@ -2,6 +2,21 @@ import Link from 'next/link'
 import { useCookies } from 'react-cookie'
 import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import styles from './navbar.module.css'
+
+const adminOptionsList = [
+  { href: '/AddArtist', title: 'Add Artist' },
+  { href: '/AddLabel', title: 'Add Label' },
+  { href: '/AddUser', title: 'Add User' },
+  { href: '/UpdateArtist', title: 'Update Artist' },
+  { href: '/UpdateAlbum', title: 'Update Album' }
+]
+
+const userOptionsList = [
+  { href: '/AddArtist', title: 'Add Artist' },
+  { href: '/UpdateArtist', title: 'Update Artist' },
+  { href: '/UpdateAlbum', title: 'Update Album' }
+]
 
 const Nav = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
@@ -12,112 +27,77 @@ const Nav = () => {
     if (cookies.user) {
       setAuth(true)
       setUser(cookies.user.user)
+    } else {
+      setAuth(false)
+      setUser()
     }
-  }, [cookies])
-  let authenticatedOptions
+  }, [cookies.user])
+  let userOptions
   let adminOptions
+
   const handleLogout = () => {
     removeCookie('user', { path: '/' })
 
     router.push('/')
   }
   if (auth) {
-    authenticatedOptions = (
-      <ul className="nav-bar">
-        <li>Hello {user.name}</li>
-        <Link href={`/labels/${user.labelId}`}>
-          <a>
-            <li>Label Page</li>
-          </a>
-        </Link>
-        <Link href="/AddArtist">
-          <a>
-            <li>Add Artist</li>
-          </a>
-        </Link>
-        <Link href="/AddAlbum">
-          <a>
-            <li>Add Album</li>
-          </a>
-        </Link>
-        <Link href="/UpdateLabel">
-          <a>
-            <li>Update Label</li>
-          </a>
-        </Link>
-        <Link href="/UpdateArtist">
-          <a>
-            <li>Update Artist</li>
-          </a>
-        </Link>
-        <Link href="/UpdateAlbum">
-          <a>
-            <li>Update Album</li>
-          </a>
-        </Link>
-        <Link href="/">
-          <a>
-            <li onClick={() => handleLogout()}>Log out</li>
-          </a>
-        </Link>
-      </ul>
+    userOptions = (
+      <>
+        <li>
+          <Link href={`/labels/${user.labelId}`}>
+            <a>Label Page</a>
+          </Link>
+        </li>
+        {userOptionsList.map(({ href, title }, index) => (
+          <li key={index}>
+            <Link href={href}>
+              <a>{title}</a>
+            </Link>
+          </li>
+        ))}
+        <li>
+          <button className="btn primary" onClick={() => handleLogout()}>
+            Log out
+          </button>
+        </li>
+      </>
     )
 
     adminOptions = (
-      <ul className="nav-bar">
-        <Link href="/AddArtist">
-          <a>
-            <li>Add Artist</li>
-          </a>
-        </Link>
-
-        <Link href="/AddLabel">
-          <a>
-            <li>Add Label</li>
-          </a>
-        </Link>
-        <Link href="/AddUser">
-          <a>
-            <li>Add User</li>
-          </a>
-        </Link>
-        <Link href="/UpdateArtist">
-          <a>
-            <li>Update Artist</li>
-          </a>
-        </Link>
-        <Link href="/UpdateAlbum">
-          <a>
-            <li>Update Album</li>
-          </a>
-        </Link>
-        <Link href="/">
-          <a>
-            <li onClick={() => handleLogout()}>Log out</li>
-          </a>
-        </Link>
-      </ul>
+      <>
+        {adminOptionsList.map(({ href, title }, index) => (
+          <li key={index}>
+            <Link href={href}>
+              <a>{title}</a>
+            </Link>
+          </li>
+        ))}
+        <li>
+          <button className="btn primary" onClick={() => handleLogout()}>
+            Log Out
+          </button>
+        </li>
+      </>
     )
   }
 
   const publicOptions = (
-    <ul className="nav-bar">
+    <li>
       <Link href="/SignIn">
-        <a>
-          <li>Sign In</li>
-        </a>
+        <a>Sign In</a>
       </Link>
-    </ul>
+    </li>
   )
 
   return (
-    <nav>
-      {auth
-        ? user.isAdmin
-          ? adminOptions
-          : authenticatedOptions
-        : publicOptions}
-    </nav>
+    <>
+      {user ? <div className={styles.greeting}>Hello {user.name}</div> : null}
+      <nav className={styles.nav}>
+        <ul className={styles.navbar}>
+          {auth ? (user.isAdmin ? adminOptions : userOptions) : publicOptions}
+        </ul>
+      </nav>
+    </>
   )
 }
 export default Nav

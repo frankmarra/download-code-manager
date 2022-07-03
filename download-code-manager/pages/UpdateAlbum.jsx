@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { parseCookies } from '../helpers'
-import Nav from '../components/navbar'
 
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
@@ -72,7 +70,7 @@ const UpdateAlbum = ({ user, artists }) => {
   }, [album])
 
   const handleFormChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+    setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
 
   const handleArtistChange = (e) => {
@@ -95,14 +93,13 @@ const UpdateAlbum = ({ user, artists }) => {
   }
 
   return (
-    <div className="update-album-page">
-      <Nav />
+    <div className="form-container">
       {artists && (
-        <div className="update-album-form-wrapper">
+        <div className="update-album-form-wrapper u-flow">
           <h1>Update Album</h1>
           <div className="input-wrapper">
-            <label htmlFor="artist">Select Artist:</label>
-            <select name="artist" onChange={handleArtistChange}>
+            <label htmlFor="artist">Select Artist</label>
+            <select id="artist" onChange={handleArtistChange}>
               <option value="">--Please choose an artist--</option>
               {artists.map((artist, index) => (
                 <option key={index} value={artist.id}>
@@ -112,8 +109,8 @@ const UpdateAlbum = ({ user, artists }) => {
             </select>
           </div>
           <div className="input-wrapper">
-            <label htmlFor="album">Select Album:</label>
-            <select name="album" onChange={handleAlbumChange}>
+            <label htmlFor="album">Select Album</label>
+            <select id="album" onChange={handleAlbumChange}>
               <option value="">--Please choose an album</option>
               {artist ? (
                 artist.Albums.map((album, index) => (
@@ -126,40 +123,42 @@ const UpdateAlbum = ({ user, artists }) => {
               )}
             </select>
           </div>
-          <form className="update-album-form" onSubmit={handleSubmit}>
+          <form className="update-album-form u-flow" onSubmit={handleSubmit}>
             <div className="input-wrapper">
-              <label htmlFor="name">Name:</label>
+              <label htmlFor="name">Name</label>
               <input
                 onChange={handleFormChange}
-                name="name"
+                id="name"
                 type="text"
                 value={formValues.name}
                 required
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="isActive">Status:</label>
-              <select name="isActive" onChange={handleFormChange}>
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
+              <label htmlFor="isActive">Status</label>
+              <select id="isActive" onChange={handleFormChange}>
+                <option value="">--Set Status--</option>
+                <option value={true}>Active</option>
+                <option value={false}>Inactive</option>
               </select>
             </div>
             <button
               type="submit"
-              className="update-album-button"
+              className="btn primary"
               disabled={!album && !formValues.name}
             >
               Update Album
             </button>
           </form>
           <button
+            className="btn secondary"
             onClick={() => {
               user.user.labelId == null
                 ? router.push('/')
                 : router.push(`/labels/${user.user.labelId}`)
             }}
           >
-            Home
+            Cancel
           </button>
         </div>
       )}

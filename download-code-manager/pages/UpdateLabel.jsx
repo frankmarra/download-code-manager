@@ -46,7 +46,6 @@ const UpdateLabel = ({ user, label }) => {
 
   return (
     <div className="update-label-page">
-      <Nav />
       {label && (
         <div className="update-label-form-wrapper">
           <h1>Update {`${label.name}`}</h1>

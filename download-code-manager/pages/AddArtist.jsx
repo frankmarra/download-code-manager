@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useCookies } from 'react-cookie'
+
 import axios from 'axios'
-import Nav from '../components/navbar'
+
 import { parseCookies } from '../helpers'
 
 export async function getServerSideProps({ req }) {
@@ -14,7 +14,6 @@ export async function getServerSideProps({ req }) {
 }
 
 const AddArtist = ({ user }) => {
-  const [cookies] = useCookies(['user'])
   const [labels, setLabels] = useState()
   const [formValues, setFormValues] = useState({
     name: '',
@@ -53,10 +52,9 @@ const AddArtist = ({ user }) => {
 
   return (
     labels && (
-      <div className="add-artist-page">
-        <Nav />
+      <div className="form-container">
         {artistAdded ? (
-          <div className="artist-added-wrapper">
+          <div className="artist-added-wrapper u-flow">
             <h1>New Artist Added</h1>
             <p>A new artist was added with the name {`${newArtist.name}`}</p>
             <p>Would you like to add another artist?</p>
@@ -78,9 +76,12 @@ const AddArtist = ({ user }) => {
             </button>
           </div>
         ) : (
-          <div className="add-artist-form-wrapper">
+          <div className="add-artist-form-wrapper u-flow">
             <h1>Add New Artist</h1>
-            <form className="add-new-artist-form" onSubmit={handleSubmit}>
+            <form
+              className="add-new-artist-form u-flow"
+              onSubmit={handleSubmit}
+            >
               <div className="input-wrapper">
                 <label htmlFor="name">Name:</label>
                 <input
@@ -145,20 +146,21 @@ const AddArtist = ({ user }) => {
               )}
               <button
                 type="submit"
-                className="add-artist-button"
+                className="btn primary"
                 disabled={!formValues.name}
               >
                 Add Artist
               </button>
             </form>
             <button
+              className="btn secondary"
               onClick={() => {
                 user.user.labelId == null
                   ? router.push('/')
                   : router.push(`/labels/${user.user.labelId}`)
               }}
             >
-              Home
+              Cancel
             </button>
           </div>
         )}

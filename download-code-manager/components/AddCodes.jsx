@@ -32,7 +32,7 @@ const AddCodes = ({ artists }) => {
     }
 
     getCodeTotals()
-  }, [formValues])
+  }, [formValues.album])
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
@@ -46,8 +46,8 @@ const AddCodes = ({ artists }) => {
       let newCode = {
         albumId: formValues.album,
         albumCode: code,
-        used: false
-        // artistId: artists[formValues.artist].id
+        used: false,
+        artistId: artists[formValues.artist].id
       }
       codeArray.push(newCode)
     })
@@ -78,8 +78,12 @@ const AddCodes = ({ artists }) => {
       </button>
     </div>
   ) : (
-    <div className="add-codes-wrapper">
-      <form className="add-codes-form" id="add-codes" onSubmit={handleSubmit}>
+    <div className="add-codes-wrapper u-flow">
+      <form
+        className="add-codes-form u-flow"
+        id="add-codes"
+        onSubmit={handleSubmit}
+      >
         <div className="input-wrapper">
           <label htmlFor="artist">Artist</label>
           <select name="artist" onChange={handleChange}>
@@ -105,9 +109,7 @@ const AddCodes = ({ artists }) => {
           </div>
         ) : formValues.artist ? (
           <div>This artist has no albums</div>
-        ) : (
-          <div></div>
-        )}
+        ) : null}
         {formValues.album ? (
           <div className="input-wrapper">
             <div className="code-totals">
@@ -129,14 +131,12 @@ const AddCodes = ({ artists }) => {
               onChange={handleChange}
             ></textarea>
           </div>
-        ) : (
-          <div></div>
-        )}
+        ) : null}
         {formValues.albumCodes != '' ? (
-          <button type="submit">Add Codes!</button>
-        ) : (
-          <div></div>
-        )}
+          <button className="btn primary" type="submit">
+            Add Codes!
+          </button>
+        ) : null}
       </form>
     </div>
   )

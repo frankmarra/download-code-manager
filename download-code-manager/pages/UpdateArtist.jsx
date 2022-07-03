@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { parseCookies } from '../helpers'
-import Nav from '../components/navbar'
 
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
@@ -23,12 +22,12 @@ const UpdateArtist = ({ user, artists }) => {
   const [artist, setArtist] = useState()
   const [artistChoice, setArtistChoice] = useState('')
   const [formValues, setFormValues] = useState({
-    name: artist ? artist.name : '',
-    email: artist ? artist.email : '',
-    url: artist ? artist.url : '',
-    logo: artist ? artist.logo : '',
-    redeemLink: artist ? artist.redeemLink : '',
-    isActive: artist ? artist.isActive : ''
+    name: '',
+    email: '',
+    url: '',
+    logo: '',
+    redeemLink: '',
+    isActive: ''
   })
   const router = useRouter()
 
@@ -64,7 +63,7 @@ const UpdateArtist = ({ user, artists }) => {
   }, [artist])
 
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+    setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
 
   const handleArtistChange = (e) => {
@@ -83,13 +82,12 @@ const UpdateArtist = ({ user, artists }) => {
   }
 
   return (
-    <div className="update-artist-page">
-      <Nav />
+    <section className="form-container">
       {artists && (
-        <div className="update-artist-form-wrapper">
+        <div className="update-artist-form-wrapper u-flow">
           <h1>Update Artist</h1>
           <div className="input-wrapper">
-            <label htmlFor="artist">Select Artist:</label>
+            <label htmlFor="artist">Select Artist</label>
             <select name="artist" onChange={handleArtistChange}>
               <option value="">--Please choose an artist--</option>
               {artists.map((artist, index) => (
@@ -99,81 +97,83 @@ const UpdateArtist = ({ user, artists }) => {
               ))}
             </select>
           </div>
-          <form className="update-artist-form" onSubmit={handleSubmit}>
+          <form className="update-artist-form u-flow" onSubmit={handleSubmit}>
             <div className="input-wrapper">
-              <label htmlFor="name">Name:</label>
+              <label htmlFor="name">Name</label>
               <input
                 onChange={handleChange}
-                name="name"
+                id="name"
                 type="text"
                 value={formValues.name}
                 required
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="email">E-mail:</label>
+              <label htmlFor="email">E-mail</label>
               <input
                 onChange={handleChange}
-                name="email"
+                id="email"
                 type="email"
                 value={formValues.email}
                 required
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="url">URL:</label>
+              <label htmlFor="url">URL</label>
               <input
                 onChange={handleChange}
-                name="url"
+                id="url"
                 type="text"
                 value={formValues.url}
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="logo">Logo:</label>
+              <label htmlFor="logo">Logo</label>
               <input
                 onChange={handleChange}
-                name="logo"
+                id="logo"
                 type="text"
                 value={formValues.logo}
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="redeemLink">Redemption Link:</label>
+              <label htmlFor="redeemLink">Redemption Link</label>
               <input
                 onChange={handleChange}
-                name="redeemLink"
+                id="redeemLink"
                 type="text"
                 value={formValues.redeemLink}
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="isActive">Status:</label>
-              <select name="isActive" onChange={handleChange}>
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
+              <label htmlFor="isActive">Status</label>
+              <select id="isActive" onChange={handleChange}>
+                <option value="">--Please choose an artist--</option>
+                <option value={true}>Active</option>
+                <option value={false}>Inactive</option>
               </select>
             </div>
             <button
               type="submit"
-              className="update-artist-button"
+              className="btn primary"
               disabled={!formValues.name && !formValues.email}
             >
               Update Artist
             </button>
           </form>
           <button
+            className="btn secondary"
             onClick={() => {
               user.user.labelId == null
                 ? router.push('/')
                 : router.push(`/labels/${user.user.labelId}`)
             }}
           >
-            Home
+            Cancel
           </button>
         </div>
       )}
-    </div>
+    </section>
   )
 }
 

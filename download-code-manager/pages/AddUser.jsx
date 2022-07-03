@@ -48,7 +48,6 @@ const AddUser = ({ labels }) => {
 
   return (
     <div className="add-user-page">
-      <Nav />
       {userAdded ? (
         <div className="user-added-wrapper">
           <h1>New User Added</h1>

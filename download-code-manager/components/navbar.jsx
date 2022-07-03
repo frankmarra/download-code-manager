@@ -9,13 +9,15 @@ const adminOptionsList = [
   { href: '/AddLabel', title: 'Add Label' },
   { href: '/AddUser', title: 'Add User' },
   { href: '/UpdateArtist', title: 'Update Artist' },
-  { href: '/UpdateAlbum', title: 'Update Album' }
+  { href: '/UpdateAlbum', title: 'Update Album' },
+  { href: '/UpdateUser', title: 'Update User' }
 ]
 
 const userOptionsList = [
   { href: '/AddArtist', title: 'Add Artist' },
   { href: '/UpdateArtist', title: 'Update Artist' },
-  { href: '/UpdateAlbum', title: 'Update Album' }
+  { href: '/UpdateAlbum', title: 'Update Album' },
+  { href: '/UpdateUser', title: 'Update User' }
 ]
 
 const Nav = () => {

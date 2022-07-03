@@ -1,17 +1,18 @@
 import { useState } from 'react'
-import { useCookies } from 'react-cookie'
 import axios from 'axios'
-import Nav from '../components/navbar'
+import { parseCookies } from '../helpers'
+import { useRouter } from 'next/router'
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req }) {
+  const cookieString = parseCookies(req)
+  const cookies = JSON.parse(cookieString.user)
   const res = await axios.get(`http://localhost:3001/api/labels`)
   const labels = res.data
 
-  return { props: { labels } }
+  return { props: { user: cookies, labels } }
 }
 
-const AddUser = ({ labels }) => {
-  const [cookies] = useCookies(['user'])
+const AddUser = ({ labels, user }) => {
   const [formValues, setFormValues] = useState({
     firstName: '',
     lastName: '',
@@ -22,9 +23,9 @@ const AddUser = ({ labels }) => {
   })
   const [userAdded, toggleUserAdded] = useState(false)
   const [newUser, setNewUser] = useState()
-
+  const router = useRouter()
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+    setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
@@ -47,9 +48,9 @@ const AddUser = ({ labels }) => {
   }
 
   return (
-    <div className="add-user-page">
+    <div className="form-container">
       {userAdded ? (
-        <div className="user-added-wrapper">
+        <div className="user-added-wrapper u-flow">
           <h1>New User Added</h1>
           <p>
             A user with the name {`${newUser.firstName}`}{' '}
@@ -57,6 +58,7 @@ const AddUser = ({ labels }) => {
           </p>
           <p>Would you like to add another user?</p>
           <button
+            className="btn primary"
             onClick={() => {
               toggleUserAdded(false)
             }}
@@ -65,56 +67,54 @@ const AddUser = ({ labels }) => {
           </button>
         </div>
       ) : (
-        <div className="add-user-form-wrapper">
+        <div className="add-user-form-wrapper u-flow">
           <h1>Add New User</h1>
-          <form className="add-new-user-form" onSubmit={handleSubmit}>
+          <form className="add-new-user-form u-flow" onSubmit={handleSubmit}>
             <div className="input-wrapper">
-              <label htmlFor="firstName">User First Name:</label>
+              <label htmlFor="firstName">First Name</label>
               <input
                 onChange={handleChange}
-                name="firstName"
+                id="firstName"
                 type="text"
-                placeholder="First Name"
                 value={formValues.firstName}
                 required
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="lastName">User First Name:</label>
+              <label htmlFor="lastName">Last Name</label>
               <input
                 onChange={handleChange}
-                name="lastName"
+                id="lastName"
                 type="text"
-                placeholder="Last Name"
                 value={formValues.lastName}
                 required
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="email">User E-mail:</label>
+              <label htmlFor="email">E-mail</label>
               <input
                 onChange={handleChange}
-                name="email"
+                id="email"
                 type="email"
                 value={formValues.email}
                 required
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="password">Create Password:</label>
+              <label htmlFor="password">Create Password</label>
               <input
                 onChange={handleChange}
-                name="password"
+                id="password"
                 type="password"
                 value={formValues.password}
                 required
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="passwordCheck">Re-type Password:</label>
+              <label htmlFor="passwordCheck">Re-type Password</label>
               <input
                 onChange={handleChange}
-                name="passwordCheck"
+                id="passwordCheck"
                 type="password"
                 value={formValues.passwordCheck}
                 required
@@ -122,7 +122,7 @@ const AddUser = ({ labels }) => {
             </div>
             <div className="input-wrapper">
               <label htmlFor="labelId">User Label:</label>
-              <select name="labelId" onChange={handleChange}>
+              <select id="labelId" onChange={handleChange}>
                 <option value="">--Please choose a label</option>
                 {labels.map((label) => (
                   <option value={label.id}>{label.name}</option>
@@ -131,7 +131,7 @@ const AddUser = ({ labels }) => {
             </div>
             <button
               type="submit"
-              className="add-user-button"
+              className="btn primary"
               disabled={
                 !formValues.firstName ||
                 !formValues.email ||
@@ -143,6 +143,16 @@ const AddUser = ({ labels }) => {
               Add User
             </button>
           </form>
+          <button
+            className="btn secondary"
+            onClick={() => {
+              user.user.labelId == null
+                ? router.push('/')
+                : router.push(`/labels/${user.user.labelId}`)
+            }}
+          >
+            Cancel
+          </button>
         </div>
       )}
     </div>

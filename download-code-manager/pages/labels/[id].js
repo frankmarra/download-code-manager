@@ -57,7 +57,6 @@ export default function LabelPage({ label }) {
         <h1 className={utilStyles.labelName}>{label.name}</h1>
         {auth ? (
           <div className="add-codes">
-            <h2>Add Codes</h2>
             <AddCodes artists={label.Artists} />
           </div>
         ) : (

@@ -6,6 +6,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
   const [activeAlbums, setActiveAlbums] = useState()
   const [randomCode, setRandomCode] = useState()
   const [clicked, setClicked] = useState(false)
+  const [copied, setCopied] = useState(false)
   const [formValues, setFormValues] = useState({
     artist: '',
     album: ''
@@ -71,8 +72,10 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
 
   const copyToClipboard = async (code) => {
     if ('clipboard' in navigator) {
+      setCopied(true)
       return await navigator.clipboard.writeText(code)
     } else {
+      setCopied(true)
       return document.execCommand('copy', true, code)
     }
   }
@@ -134,14 +137,20 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
         </form>
         {randomCode ? (
           <div className="random-code-wrapper u-flow">
-            <div className="random-code">
-              {randomCode.albumCode}
-              <button
-                className="btn primary"
-                onClick={() => copyToClipboard(randomCode.albumCode)}
-              >
-                Copy to Clipboard
-              </button>
+            <div className="random-code u-flow">
+              <h4>{randomCode.albumCode}</h4>
+              {copied ? (
+                <button className="btn copied" disabled>
+                  Code Copied
+                </button>
+              ) : (
+                <button
+                  className="btn primary"
+                  onClick={() => copyToClipboard(randomCode.albumCode)}
+                >
+                  Copy to Clipboard
+                </button>
+              )}
             </div>
 
             <div className="btn primary">

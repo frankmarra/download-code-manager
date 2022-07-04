@@ -6,7 +6,7 @@ export const SignInUser = async (data) => {
 
     return res.data
   } catch (error) {
-    throw error
+    return 'ERROR'
   }
 }
 
@@ -16,6 +16,15 @@ export const RegisterUser = async (data) => {
     return res.data
   } catch (error) {
     throw error
+  }
+}
+
+export const UpdateUserPassword = async (data) => {
+  try {
+    const res = await Client.post('/auth/update', data)
+    return res.data
+  } catch (error) {
+    return 'ERROR'
   }
 }
 

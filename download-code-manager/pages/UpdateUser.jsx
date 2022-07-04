@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { parseCookies } from '../helpers'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
@@ -52,7 +53,7 @@ const UpdateUser = ({ user, userInfo }) => {
   }
 
   return (
-    <section className="form-container">
+    <section className="form-container u-flow">
       <div className="update-user-form-wrapper u-flow">
         <h1>Update User</h1>
         <form className="update-user-form u-flow" onSubmit={handleSubmit}>
@@ -96,6 +97,21 @@ const UpdateUser = ({ user, userInfo }) => {
             Update User
           </button>
         </form>
+        <button
+          className="btn secondary"
+          onClick={() => {
+            user.user.labelId == null
+              ? router.push('/')
+              : router.push(`/labels/${user.user.labelId}`)
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+      <div>
+        <Link href={'/UpdatePassword'}>
+          <a className="btn primary">Update Password?</a>
+        </Link>
       </div>
     </section>
   )

@@ -15,7 +15,6 @@ const AddCodes = ({ artists }) => {
     album: '',
     albumCodes: ''
   })
-
   useEffect(() => {
     const getCodeTotals = async () => {
       if (formValues.album) {
@@ -34,24 +33,30 @@ const AddCodes = ({ artists }) => {
     getCodeTotals()
   }, [formValues.album])
 
+  useEffect(() => {
+    const createCodeArray = async () => {
+      let codeArray = []
+      let newCodes = formValues.albumCodes.split(/\s/g)
+      newCodes.forEach((code) => {
+        let newCode = {
+          albumId: formValues.album,
+          albumCode: code,
+          used: false,
+          artistId: artists[formValues.artist].id
+        }
+        codeArray.push(newCode)
+      })
+      setCodes(codeArray)
+    }
+    formValues.albumCodes ? createCodeArray() : null
+  }, [formValues.albumCodes])
+
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    let codeArray = []
-    let newCodes = formValues.albumCodes.split(/\s/g)
-    newCodes.forEach((code) => {
-      let newCode = {
-        albumId: formValues.album,
-        albumCode: code,
-        used: false,
-        artistId: artists[formValues.artist].id
-      }
-      codeArray.push(newCode)
-    })
-    setCodes(codeArray)
     await axios.post(
       `http://localhost:3001/api/labels/${cookies.user.user.labelId}/artists/${
         artists[formValues.artist].id
@@ -73,12 +78,13 @@ const AddCodes = ({ artists }) => {
   return codesAdded ? (
     <div>
       <h2>Codes Added!</h2>
-      <button type="submit" onClick={addMoreCodes}>
+      <button className="btn primary" type="submit" onClick={addMoreCodes}>
         Add more codes?
       </button>
     </div>
   ) : (
-    <div className="add-codes-wrapper u-flow">
+    <div className="form-container u-flow">
+      <h2>Add Codes</h2>
       <form
         className="add-codes-form u-flow"
         id="add-codes"

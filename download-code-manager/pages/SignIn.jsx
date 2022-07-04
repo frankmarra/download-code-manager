@@ -2,9 +2,6 @@ import { useState } from 'react'
 import { SignInUser } from '../services/Auth'
 import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
-import axios from 'axios'
-import Nav from '../components/navbar'
-import Layout from '../components/layout'
 
 const SignIn = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
@@ -12,6 +9,7 @@ const SignIn = () => {
     email: '',
     password: ''
   })
+  const [signinError, setSigninError] = useState(false)
   const router = useRouter()
 
   const handleChange = (e) => {
@@ -21,12 +19,17 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const payload = await SignInUser(formValues)
-    setCookie('user', payload, { path: '/' })
-    setFormValues({ email: '', password: '' })
-    if (!payload.user.labelId) {
-      router.push('/')
+    if (payload === 'ERROR') {
+      setFormValues({ email: '', password: '' })
+      setSigninError(true)
     } else {
-      router.push(`/labels/${payload.user.labelId}`)
+      setCookie('user', payload, { path: '/' })
+
+      if (!payload.user.labelId) {
+        router.push('/')
+      } else {
+        router.push(`/labels/${payload.user.labelId}`)
+      }
     }
   }
 
@@ -66,6 +69,11 @@ const SignIn = () => {
             Sign In
           </button>
         </form>
+        {signinError ? (
+          <h3>
+            You have entered the wrong E-mail or Password. Please try again.
+          </h3>
+        ) : null}
       </div>
     </section>
   )

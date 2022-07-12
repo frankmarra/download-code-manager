@@ -3,14 +3,13 @@ import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { parseCookies } from '../helpers'
-import Nav from '../components/navbar'
 
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
   const cookies = JSON.parse(cookieString.user)
-
+  console.log('cookie: ', cookies)
   const res = await axios.get(
-    `http://localhost:3001/api/labels/${cookies.user.labelId}`
+    `http://localhost:3001/api/labels/${cookies.userLabelSlug}`
   )
   const label = res.data
 
@@ -30,7 +29,7 @@ const UpdateLabel = ({ user, label }) => {
   const router = useRouter()
 
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+    setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
@@ -41,56 +40,66 @@ const UpdateLabel = ({ user, label }) => {
     )
     user.user.labelId == null
       ? router.push('/')
-      : router.push(`/labels/${user.user.labelId}`)
+      : router.push(`/labels/${user.userLabelSlug}`)
   }
 
   return (
-    <div className="update-label-page">
+    <div className="form-container">
       {label && (
-        <div className="update-label-form-wrapper">
+        <div className="update-label-form-wrapper u-flow">
           <h1>Update {`${label.name}`}</h1>
-          <form className="update-label-form" onSubmit={handleSubmit}>
+          <form className="update-label-form u-flow" onSubmit={handleSubmit}>
             <div className="input-wrapper">
-              <label htmlFor="email">E-mail:</label>
+              <label htmlFor="email">E-mail</label>
               <input
                 onChange={handleChange}
-                name="email"
+                id="email"
                 type="email"
                 value={formValues.email}
                 required
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="url">Label site:</label>
+              <label htmlFor="url">URL</label>
               <input
                 onChange={handleChange}
-                name="url"
+                id="url"
                 type="text"
                 value={formValues.url}
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="logo">Label Logo:</label>
+              <label htmlFor="logo">Logo</label>
               <input
                 onChange={handleChange}
-                name="logo"
+                id="logo"
                 type="text"
                 value={formValues.logo}
               />
             </div>
             <div className="input-wrapper">
-              <label htmlFor="redeemLink">Redemption Link:</label>
+              <label htmlFor="redeemLink">Redemption Link</label>
               <input
                 onChange={handleChange}
-                name="redeemLink"
+                id="redeemLink"
                 type="text"
                 value={formValues.redeemLink}
               />
             </div>
-            <button type="submit" className="update-label-button">
+            <button type="submit" className="btn primary">
               Update Label
             </button>
           </form>
+          <button
+            className="btn secondary"
+            onClick={() => {
+              user.user.labelId == null
+                ? router.push('/')
+                : router.push(`/labels/${user.userLabelSlug}`)
+            }}
+          >
+            Cancel
+          </button>
         </div>
       )}
     </div>

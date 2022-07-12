@@ -2,8 +2,16 @@ import { useState } from 'react'
 import { SignInUser } from '../services/Auth'
 import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
+import axios from 'axios'
 
-const SignIn = () => {
+export async function getStaticProps() {
+  const res = await axios.get(`http://localhost:3001/api/labels/`)
+  const labels = res.data
+
+  return { props: { labels } }
+}
+
+const SignIn = ({ labels }) => {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const [formValues, setFormValues] = useState({
     email: '',
@@ -18,17 +26,22 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const payload = await SignInUser(formValues)
+    let payload = await SignInUser(formValues)
     if (payload === 'ERROR') {
       setFormValues({ email: '', password: '' })
       setSigninError(true)
     } else {
+      labels.forEach((label) => {
+        if (label.id === payload.user.labelId) {
+          payload = { ...payload, userLabelSlug: label.slug }
+        }
+      })
       setCookie('user', payload, { path: '/' })
 
       if (!payload.user.labelId) {
         router.push('/')
       } else {
-        router.push(`/labels/${payload.user.labelId}`)
+        router.push(`/labels/${payload.userLabelSlug}`)
       }
     }
   }

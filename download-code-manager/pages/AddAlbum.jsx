@@ -27,7 +27,7 @@ const AddAlbum = ({ user }) => {
   useEffect(() => {
     const getLabel = async () => {
       const res = await axios.get(
-        `http://localhost:3001/api/labels/${user.user.labelId}`
+        `http://localhost:3001/api/labels/${user.userLabelSlug}`
       )
       const label = res.data
       setLabel(label)
@@ -36,7 +36,7 @@ const AddAlbum = ({ user }) => {
   }, [])
 
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+    setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
@@ -51,14 +51,15 @@ const AddAlbum = ({ user }) => {
   }
 
   return (
-    <div className="add-album-page">
+    <div className="form-container">
       {label ? (
         albumAdded ? (
-          <div className="album-added-wrapper">
+          <div className="album-added-wrapper u-flow">
             <h1>New Album Added</h1>
             <p>A new album with the name {`${newAlbum.name}`} was added.</p>
             <p>Would you like to add another album?</p>
             <button
+              className="btn primary"
               onClick={() => {
                 toggleAlbumAdded(false)
               }}
@@ -66,19 +67,20 @@ const AddAlbum = ({ user }) => {
               Add Another Album
             </button>
             <button
+              className="btn secondary"
               onClick={() => {
                 user.user.labelId == null
                   ? router.push('/')
-                  : router.push(`/labels/${user.user.labelId}`)
+                  : router.push(`/labels/${user.userLabelSlug}`)
               }}
             >
-              Home
+              Cancel
             </button>
           </div>
         ) : (
-          <div className="add-album-form-wrapper">
+          <div className="add-album-form-wrapper u-flow">
             <h1>Add New Album</h1>
-            <form className="add-new-album-form" onSubmit={handleSubmit}>
+            <form className="add-new-album-form u-flow" onSubmit={handleSubmit}>
               <div className="input-wrapper">
                 <label htmlFor="artistId">Artist:</label>
                 <select name="artistId" onChange={handleChange}>
@@ -95,7 +97,7 @@ const AddAlbum = ({ user }) => {
                   <label htmlFor="name">Album Name</label>
                   <input
                     onChange={handleChange}
-                    name="name"
+                    id="name"
                     type="text"
                     placeholder="Enter Album Name"
                     value={formValues.name}
@@ -107,20 +109,21 @@ const AddAlbum = ({ user }) => {
               )}
               <button
                 type="submit"
-                className="add-album-button"
-                disabled={!formValues.name && !formValues.artistId}
+                className="btn primary"
+                disabled={!formValues.name || !formValues.artistId}
               >
                 Add Album
               </button>
             </form>
             <button
+              className="btn secondary"
               onClick={() => {
                 user.user.labelId == null
                   ? router.push('/')
-                  : router.push(`/labels/${user.user.labelId}`)
+                  : router.push(`/labels/${user.userLabelSlug}`)
               }}
             >
-              Home
+              Cancel
             </button>
           </div>
         )

@@ -59,20 +59,23 @@ const AddArtist = ({ user }) => {
             <p>A new artist was added with the name {`${newArtist.name}`}</p>
             <p>Would you like to add another artist?</p>
             <button
+              className="btn primary"
               onClick={() => {
                 toggleArtistAdded(false)
               }}
             >
               Add Another Artist
             </button>
+            <br />
             <button
+              className="btn secondary"
               onClick={() => {
                 user.user.labelId == null
                   ? router.push('/')
-                  : router.push(`/labels/${user.user.labelId}`)
+                  : router.push(`/labels/${user.userLabelSlug}`)
               }}
             >
-              Home
+              Cancel
             </button>
           </div>
         ) : (
@@ -157,7 +160,7 @@ const AddArtist = ({ user }) => {
               onClick={() => {
                 user.user.labelId == null
                   ? router.push('/')
-                  : router.push(`/labels/${user.user.labelId}`)
+                  : router.push(`/labels/${user.userLabelSlug}`)
               }}
             >
               Cancel

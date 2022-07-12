@@ -94,11 +94,13 @@ const AddCodes = ({ artists }) => {
           <label htmlFor="artist">Artist</label>
           <select name="artist" onChange={handleChange}>
             <option value="">--Please choose an artist--</option>
-            {artists.map((artist, index) => (
-              <option key={index} value={index}>
-                {artist.name}
-              </option>
-            ))}
+            {artists
+              ? artists.map((artist, index) => (
+                  <option key={index} value={index}>
+                    {artist.name}
+                  </option>
+                ))
+              : null}
           </select>
         </div>
         {formValues.artist && artists[formValues.artist].Albums.length > 0 ? (

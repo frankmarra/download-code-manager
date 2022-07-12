@@ -16,8 +16,10 @@ const adminOptionsList = [
 const userOptionsList = [
   { href: '/AddArtist', title: 'Add Artist' },
   { href: '/UpdateArtist', title: 'Update Artist' },
+  { href: '/AddAlbum', title: 'Add Album' },
   { href: '/UpdateAlbum', title: 'Update Album' },
-  { href: '/UpdateUser', title: 'Update User' }
+  { href: '/UpdateUser', title: 'Update User' },
+  { href: '/UpdateLabel', title: 'Update Label' }
 ]
 
 const Nav = () => {
@@ -46,7 +48,7 @@ const Nav = () => {
     userOptions = (
       <>
         <li>
-          <Link href={`/labels/${user.labelId}`}>
+          <Link href={`/labels/${cookies.user.userLabelSlug}`}>
             <a>Label Page</a>
           </Link>
         </li>

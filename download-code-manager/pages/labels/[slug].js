@@ -12,13 +12,13 @@ export async function getStaticPaths() {
   const res = await axios.get(`http://localhost:3001/api/labels`)
   const labels = res.data
   const paths = labels.map((label) => ({
-    params: { id: label.id.toString() }
+    params: { slug: label.slug }
   }))
   return { paths, fallback: false }
 }
 
 export async function getStaticProps({ params }) {
-  const res = await axios.get(`http://localhost:3001/api/labels/${params.id}`)
+  const res = await axios.get(`http://localhost:3001/api/labels/${params.slug}`)
   const label = res.data
 
   return { props: { label } }

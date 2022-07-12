@@ -89,7 +89,7 @@ const UpdateAlbum = ({ user, artists }) => {
     )
     user.user.labelId == null
       ? router.push('/')
-      : router.push(`/labels/${user.user.labelId}`)
+      : router.push(`/labels/${user.userLabelSlug}`)
   }
 
   return (

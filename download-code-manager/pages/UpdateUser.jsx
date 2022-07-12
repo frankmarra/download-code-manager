@@ -49,7 +49,7 @@ const UpdateUser = ({ user, userInfo }) => {
     )
     user.user.labelId == null
       ? router.push('/')
-      : router.push(`/labels/${user.user.labelId}`)
+      : router.push(`/labels/${user.userLabelSlug}`)
   }
 
   return (
@@ -102,7 +102,7 @@ const UpdateUser = ({ user, userInfo }) => {
           onClick={() => {
             user.user.labelId == null
               ? router.push('/')
-              : router.push(`/labels/${user.user.labelId}`)
+              : router.push(`/labels/${user.userLabelSlug}`)
           }}
         >
           Cancel

@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import Nav from '../components/navbar'
 import { parseCookies } from '../helpers'
+import Client from '../services/api'
 
 export async function getServerSideProps({ req }) {
   const cookies = parseCookies(req)
@@ -26,9 +27,7 @@ const AddAlbum = ({ user }) => {
 
   useEffect(() => {
     const getLabel = async () => {
-      const res = await axios.get(
-        `http://localhost:3001/api/labels/${user.userLabelSlug}`
-      )
+      const res = await Client.get(`/labels/${user.userLabelSlug}`)
       const label = res.data
       setLabel(label)
     }
@@ -41,8 +40,8 @@ const AddAlbum = ({ user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.post(
-      `http://localhost:3001/api/labels/${user.user.labelId}/artists/${formValues.artistId}`,
+    const res = await Client.post(
+      `/labels/${user.user.labelId}/artists/${formValues.artistId}`,
       formValues
     )
     setNewAlbum(res.data)

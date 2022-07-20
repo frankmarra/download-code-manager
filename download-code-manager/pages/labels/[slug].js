@@ -7,9 +7,10 @@ import CodeGenerator from '../../components/CodeGenerator'
 import AddCodes from '../../components/AddCodes'
 import { useCookies } from 'react-cookie'
 import { useEffect, useState } from 'react'
+import Client from '../../services/api'
 
 export async function getStaticPaths() {
-  const res = await axios.get(`http://localhost:3001/api/labels`)
+  const res = await Client.get(`/labels`)
   const labels = res.data
   const paths = labels.map((label) => ({
     params: { slug: label.slug }
@@ -18,7 +19,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await axios.get(`http://localhost:3001/api/labels/${params.slug}`)
+  const res = await Client.get(`/labels/${params.slug}`)
   const label = res.data
 
   return { props: { label } }
@@ -43,8 +44,7 @@ export default function LabelPage({ label }) {
       </Head>
       <section className="u-flex-column">
         <a href={label.url}>
-          <Image
-            priority
+          <img
             src={
               label.logo ? label.logo : `/images/pexels-hermaion-104084.jpeg`
             }

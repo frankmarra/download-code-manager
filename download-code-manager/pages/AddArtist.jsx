@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-
 import axios from 'axios'
-
 import { parseCookies } from '../helpers'
+import Client from '../services/api'
 
 export async function getServerSideProps({ req }) {
   const cookies = parseCookies(req)
@@ -29,7 +28,7 @@ const AddArtist = ({ user }) => {
 
   useEffect(() => {
     const getLabels = async () => {
-      const res = await axios.get(`http://localhost:3001/api/labels`)
+      const res = await Client.get(`/labels`)
       const labels = res.data
       setLabels(labels)
     }
@@ -41,10 +40,7 @@ const AddArtist = ({ user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.post(
-      `http://localhost:3001/api/labels/${formValues.labelId}`,
-      formValues
-    )
+    const res = await Client.post(`/labels/${formValues.labelId}`, formValues)
     setNewArtist(res.data)
     setFormValues({ name: '', url: '' })
     toggleArtistAdded(true)

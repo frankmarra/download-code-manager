@@ -3,6 +3,8 @@ import { useCookies } from 'react-cookie'
 import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import styles from './navbar.module.css'
+import axios from 'axios'
+import Client from '../services/api'
 
 const adminOptionsList = [
   { href: '/AddArtist', title: 'Add Artist' },
@@ -39,9 +41,14 @@ const Nav = () => {
   let userOptions
   let adminOptions
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await Client.get(`/auth/logout`, {
+      headers: {
+        authorization: `Bearer ${cookies.user.token}`
+      }
+    })
     removeCookie('user', { path: '/' })
-
+    setAuth(false)
     router.push('/')
   }
   if (auth) {

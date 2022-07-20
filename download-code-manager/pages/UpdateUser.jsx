@@ -3,13 +3,12 @@ import axios from 'axios'
 import { parseCookies } from '../helpers'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Client from '../services/api'
 
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
   const cookies = JSON.parse(cookieString.user)
-  const res = await axios.get(
-    `http://localhost:3001/api/users/${cookies.user.id}`
-  )
+  const res = await Client.get(`/users/${cookies.user.id}`)
   const userInfo = res.data
 
   return { props: { user: cookies, userInfo } }
@@ -43,10 +42,7 @@ const UpdateUser = ({ user, userInfo }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.put(
-      `http://localhost:3001/api/users/${user.user.id}`,
-      formValues
-    )
+    const res = await Client.put(`/users/${user.user.id}`, formValues)
     user.user.labelId == null
       ? router.push('/')
       : router.push(`/labels/${user.userLabelSlug}`)

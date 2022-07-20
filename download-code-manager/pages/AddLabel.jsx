@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { parseCookies } from '../helpers'
+import Client from '../services/api'
 
 export async function getServerSideProps({ req }) {
   const cookies = parseCookies(req)
@@ -25,7 +26,7 @@ const AddLabel = ({ user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.post(`http://localhost:3001/api/labels`, formValues)
+    const res = await Client.post(`/labels`, formValues)
     setNewLabel(res.data)
     setFormValues({ name: '', email: '' })
     toggleLabelAdded(true)

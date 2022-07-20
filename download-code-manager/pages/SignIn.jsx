@@ -3,9 +3,10 @@ import { SignInUser } from '../services/Auth'
 import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
+import Client from '../services/api'
 
 export async function getStaticProps() {
-  const res = await axios.get(`http://localhost:3001/api/labels/`)
+  const res = await Client.get(`/labels/`)
   const labels = res.data
 
   return { props: { labels } }
@@ -27,6 +28,7 @@ const SignIn = ({ labels }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     let payload = await SignInUser(formValues)
+    console.log('login payload: ', payload)
     if (payload === 'ERROR') {
       setFormValues({ email: '', password: '' })
       setSigninError(true)

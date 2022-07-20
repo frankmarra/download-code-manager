@@ -2,11 +2,12 @@ import { useState } from 'react'
 import axios from 'axios'
 import { parseCookies } from '../helpers'
 import { useRouter } from 'next/router'
+import Client from '../services/api'
 
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
   const cookies = JSON.parse(cookieString.user)
-  const res = await axios.get(`http://localhost:3001/api/labels`)
+  const res = await Client.get(`/labels`)
   const labels = res.data
 
   return { props: { user: cookies, labels } }
@@ -30,10 +31,7 @@ const AddUser = ({ labels, user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.post(
-      `http://localhost:3001/api/auth/register`,
-      formValues
-    )
+    const res = await Client.post(`/auth/register`, formValues)
     setNewUser(res.data)
     setFormValues({
       firstName: '',

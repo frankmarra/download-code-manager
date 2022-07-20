@@ -2,16 +2,15 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { parseCookies } from '../helpers'
+import Client from '../services/api'
 
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
   const cookies = JSON.parse(cookieString.user)
   let res
   cookies.user.labelId != null
-    ? (res = await axios.get(
-        `http://localhost:3001/api/labels/${cookies.user.labelId}/artists/`
-      ))
-    : (res = await axios.get(`http://localhost:3001/api/labels/0/artists/`))
+    ? (res = await Client.get(`/labels/${cookies.user.labelId}/artists/`))
+    : (res = await Client.get(`/labels/0/artists/`))
   const artists = res.data
 
   return {
@@ -32,8 +31,8 @@ const UpdateAlbum = ({ user, artists }) => {
 
   useEffect(() => {
     const getArtist = async () => {
-      const res = await axios.get(
-        `http://localhost:3001/api/labels/${user.user.labelId}/artists/${artistChoice}`
+      const res = await Client.get(
+        `/labels/${user.user.labelId}/artists/${artistChoice}`
       )
       const selectedArtist = res.data
       setArtist(selectedArtist)
@@ -48,8 +47,8 @@ const UpdateAlbum = ({ user, artists }) => {
 
   useEffect(() => {
     const getAlbum = async () => {
-      const res = await axios.get(
-        `http://localhost:3001/api/labels/${user.user.labelId}/artists/${artistChoice}/albums/${albumChoice}`
+      const res = await Client.get(
+        `/labels/${user.user.labelId}/artists/${artistChoice}/albums/${albumChoice}`
       )
       const selectedAlbum = res.data
       setAlbum(selectedAlbum)
@@ -83,8 +82,8 @@ const UpdateAlbum = ({ user, artists }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.put(
-      `http://localhost:3001/api/labels/${artist.labelId}/artists/${artist.id}/albums/${album.id}`,
+    const res = await Client.put(
+      `/labels/${artist.labelId}/artists/${artist.id}/albums/${album.id}`,
       formValues
     )
     user.user.labelId == null

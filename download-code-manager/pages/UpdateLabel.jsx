@@ -3,14 +3,12 @@ import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { parseCookies } from '../helpers'
+import Client from '../services/api'
 
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
   const cookies = JSON.parse(cookieString.user)
-  console.log('cookie: ', cookies)
-  const res = await axios.get(
-    `http://localhost:3001/api/labels/${cookies.userLabelSlug}`
-  )
+  const res = await Client.get(`/labels/${cookies.userLabelSlug}`)
   const label = res.data
 
   return {
@@ -34,10 +32,7 @@ const UpdateLabel = ({ user, label }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.put(
-      `http://localhost:3001/api/labels/${user.user.labelId}`,
-      formValues
-    )
+    const res = await Client.put(`/labels/${user.user.labelId}`, formValues)
     user.user.labelId == null
       ? router.push('/')
       : router.push(`/labels/${user.userLabelSlug}`)

@@ -3,13 +3,12 @@ import axios from 'axios'
 import { parseCookies } from '../helpers'
 import { useRouter } from 'next/router'
 import { UpdateUserPassword } from '../services/Auth'
+import Client from '../services/api'
 
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
   const cookies = JSON.parse(cookieString.user)
-  const res = await axios.get(
-    `http://localhost:3001/api/users/${cookies.user.id}`
-  )
+  const res = await Client.get(`/users/${cookies.user.id}`)
   const userInfo = res.data
 
   return { props: { user: cookies, userInfo } }

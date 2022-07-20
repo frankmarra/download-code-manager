@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
+import Client from '../services/api'
 
 const AddCodes = ({ artists }) => {
   const [cookies] = useCookies(['user'])
@@ -18,12 +19,10 @@ const AddCodes = ({ artists }) => {
   useEffect(() => {
     const getCodeTotals = async () => {
       if (formValues.album) {
-        const res = await axios.get(
-          `http://localhost:3001/api/labels/${
-            cookies.user.user.labelId
-          }/artists/${artists[formValues.artist].id}/albums/${
-            formValues.album
-          }/codes`
+        const res = await Client.get(
+          `/labels/${cookies.user.user.labelId}/artists/${
+            artists[formValues.artist].id
+          }/albums/${formValues.album}/codes`
         )
         const totals = res.data
         setCodeTotals(totals)
@@ -57,11 +56,16 @@ const AddCodes = ({ artists }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await axios.post(
-      `http://localhost:3001/api/labels/${cookies.user.user.labelId}/artists/${
+    await Client.post(
+      `/labels/${cookies.user.user.labelId}/artists/${
         artists[formValues.artist].id
       }/albums/${formValues.album}/create-codes`,
       codes
+      // {
+      //   headers: {
+      //     authorization: `Bearer ${cookies.user.token}`
+      //   }
+      // }
     )
     setCodesAdded(true)
   }

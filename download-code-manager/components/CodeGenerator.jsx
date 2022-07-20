@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import Client from '../services/api'
 
 const CodeGenerator = ({ artists, redeemLink, labelId }) => {
   const [activeArtists, setActiveArtists] = useState()
@@ -14,9 +15,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
 
   useEffect(() => {
     const getActiveArtists = async () => {
-      let res = await axios.get(
-        `http://localhost:3001/api/labels/${labelId}/active`
-      )
+      let res = await Client.get(`/labels/${labelId}/active`)
       let artists = res.data
       setActiveArtists(artists)
     }
@@ -25,8 +24,8 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
 
   useEffect(() => {
     const getActiveAlbums = async () => {
-      let res = await axios.get(
-        `http://localhost:3001/api/labels/${labelId}/artists/${
+      let res = await Client.get(
+        `/labels/${labelId}/artists/${
           activeArtists[formValues.artist].id
         }/active`
       )
@@ -40,10 +39,8 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
     const removeCode = async () => {
       if (randomCode) {
         let codeId = parseInt(randomCode.id)
-        await axios.put(
-          `http://localhost:3001/api/labels/${labelId}/artists/${
-            artists[formValues.artist].id
-          }/albums/${
+        await Client.put(
+          `/labels/${labelId}/artists/${artists[formValues.artist].id}/albums/${
             artists[formValues.artist].Albums[formValues.album].id
           }/codes/${codeId}`,
           { used: true }
@@ -58,10 +55,8 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.get(
-      `http://localhost:3001/api/labels/1/artists/${
-        artists[formValues.artist].id
-      }/albums/${
+    const res = await Client.get(
+      `/labels/${labelId}/artists/${artists[formValues.artist].id}/albums/${
         artists[formValues.artist].Albums[formValues.album].id
       }/codes/unused`
     )

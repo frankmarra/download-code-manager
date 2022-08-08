@@ -43,11 +43,6 @@ const Nav = () => {
   let adminOptions
 
   const handleLogout = async () => {
-    await Client.get(`/auth/logout`, {
-      headers: {
-        authorization: `Bearer ${cookies.user.token}`
-      }
-    })
     removeCookie('user', { path: '/' })
     setAuth(false)
     router.push('/')

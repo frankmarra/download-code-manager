@@ -43,6 +43,8 @@ const UpdatePassword = ({ user, userInfo }) => {
         newPasswordCheck: ''
       })
       setUpdateError(true)
+    } else {
+      setUpdated(true)
     }
   }
 

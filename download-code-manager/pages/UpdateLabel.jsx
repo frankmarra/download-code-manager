@@ -32,7 +32,7 @@ const UpdateLabel = ({ user, label }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await Client.put(`/labels/${user.user.labelId}`, formValues)
+    await Client.put(`/labels/${user.user.labelId}`, formValues)
     user.user.labelId == null
       ? router.push('/')
       : router.push(`/labels/${user.userLabelSlug}`)

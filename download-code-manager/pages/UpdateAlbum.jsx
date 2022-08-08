@@ -7,10 +7,7 @@ import Client from '../services/api'
 export async function getServerSideProps({ req }) {
   const cookieString = parseCookies(req)
   const cookies = JSON.parse(cookieString.user)
-  let res
-  cookies.user.labelId != null
-    ? (res = await Client.get(`/labels/${cookies.user.labelId}/artists/`))
-    : (res = await Client.get(`/labels/0/artists/`))
+  const res = await Client.get(`/labels/${cookies.user.labelId}/artists/`)
   const artists = res.data
 
   return {
@@ -82,7 +79,7 @@ const UpdateAlbum = ({ user, artists }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await Client.put(
+    await Client.put(
       `/labels/${artist.labelId}/artists/${artist.id}/albums/${album.id}`,
       formValues
     )

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { parseCookies } from '../helpers'
 import { getCookie } from 'cookies-next'
 
-export const BASE_URL = 'http://localhost:3001/api'
+export const BASE_URL = 'https://api.downloadcodemanager.com/api'
 
 const Client = axios.create({ baseURL: BASE_URL })
 Client.interceptors.request.use(

@@ -42,7 +42,7 @@ const UpdateUser = ({ user, userInfo }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await Client.put(`/users/${user.user.id}`, formValues)
+    await Client.put(`/users/${user.user.id}`, formValues)
     user.user.labelId == null
       ? router.push('/')
       : router.push(`/labels/${user.userLabelSlug}`)

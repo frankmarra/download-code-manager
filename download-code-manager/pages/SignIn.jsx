@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie'
 import axios from 'axios'
 import Client from '../services/api'
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const res = await Client.get(`/labels/`)
   const labels = res.data
 
@@ -28,7 +28,7 @@ const SignIn = ({ labels }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     let payload = await SignInUser(formValues)
-    console.log('login payload: ', payload)
+
     if (payload === 'ERROR') {
       setFormValues({ email: '', password: '' })
       setSigninError(true)

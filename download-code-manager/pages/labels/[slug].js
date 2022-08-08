@@ -1,33 +1,43 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import Layout from '../../components/layout'
+// import Image from 'next/image'
+// import Layout from '../../components/layout'
 import utilStyles from '../../styles/utils.module.css'
-import axios from 'axios'
+// import axios from 'axios'
 import CodeGenerator from '../../components/CodeGenerator'
 import AddCodes from '../../components/AddCodes'
 import { useCookies } from 'react-cookie'
 import { useEffect, useState } from 'react'
 import Client from '../../services/api'
+import { useRouter } from 'next/router'
 
 export async function getStaticPaths() {
+  // if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+  //   return {
+  //     paths: [],
+  //     fallback: 'blocking'
+  //   }
+  // }
+
   const res = await Client.get(`/labels`)
   const labels = res.data
-  const paths = labels.map((label) => ({
+  let paths = labels.map((label) => ({
     params: { slug: label.slug }
   }))
-  return { paths, fallback: false }
+
+  return { paths, fallback: true }
 }
 
 export async function getStaticProps({ params }) {
   const res = await Client.get(`/labels/${params.slug}`)
   const label = res.data
 
-  return { props: { label } }
+  return { props: { label }, revalidate: 60 }
 }
 
 export default function LabelPage({ label }) {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const [auth, setAuth] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     if (cookies.user) {
@@ -36,6 +46,10 @@ export default function LabelPage({ label }) {
       }
     }
   }, [label])
+
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
 
   return label ? (
     <>

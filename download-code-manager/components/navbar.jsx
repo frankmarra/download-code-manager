@@ -7,12 +7,13 @@ import axios from 'axios'
 import Client from '../services/api'
 
 const adminOptionsList = [
-  { href: '/AddArtist', title: 'Add Artist' },
   { href: '/AddLabel', title: 'Add Label' },
+  { href: '/UpdateLabel', title: 'Update Label' },
   { href: '/AddUser', title: 'Add User' },
+  { href: '/UpdateUser', title: 'Update User' },
+  { href: '/AddArtist', title: 'Add Artist' },
   { href: '/UpdateArtist', title: 'Update Artist' },
-  { href: '/UpdateAlbum', title: 'Update Album' },
-  { href: '/UpdateUser', title: 'Update User' }
+  { href: '/UpdateAlbum', title: 'Update Album' }
 ]
 
 const userOptionsList = [

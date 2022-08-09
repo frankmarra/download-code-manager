@@ -31,7 +31,7 @@ export async function getStaticProps({ params }) {
   const res = await Client.get(`/labels/${params.slug}`)
   const label = res.data
 
-  return { props: { label }, revalidate: 60 }
+  return { props: { label }, revalidate: 10 }
 }
 
 export default function LabelPage({ label }) {

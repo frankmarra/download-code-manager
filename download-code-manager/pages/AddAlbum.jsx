@@ -82,7 +82,7 @@ const AddAlbum = ({ user }) => {
             <form className="add-new-album-form u-flow" onSubmit={handleSubmit}>
               <div className="input-wrapper">
                 <label htmlFor="artistId">Artist:</label>
-                <select name="artistId" onChange={handleChange}>
+                <select id="artistId" onChange={handleChange}>
                   <option value="">--Please choose an artist--</option>
                   {label.Artists.map((artist, index) => (
                     <option key={index} value={artist.id}>
@@ -109,7 +109,7 @@ const AddAlbum = ({ user }) => {
               <button
                 type="submit"
                 className="btn primary"
-                disabled={!formValues.name || !formValues.artistId}
+                disabled={!formValues.name && !formValues.artistId}
               >
                 Add Album
               </button>

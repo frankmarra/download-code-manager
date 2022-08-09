@@ -3,8 +3,8 @@ import { useCookies } from 'react-cookie'
 import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import styles from './navbar.module.css'
-import axios from 'axios'
-import Client from '../services/api'
+// import axios from 'axios'
+// import Client from '../services/api'
 
 const adminOptionsList = [
   { href: '/AddLabel', title: 'Add Label' },
@@ -13,6 +13,7 @@ const adminOptionsList = [
   { href: '/UpdateUser', title: 'Update User' },
   { href: '/AddArtist', title: 'Add Artist' },
   { href: '/UpdateArtist', title: 'Update Artist' },
+  { href: '/AddAlbum', title: 'Add Album' },
   { href: '/UpdateAlbum', title: 'Update Album' }
 ]
 
@@ -72,6 +73,11 @@ const Nav = () => {
 
     adminOptions = (
       <>
+        <li>
+          <Link href={`/labels/${cookies.user.userLabelSlug}`}>
+            <a>Label Page</a>
+          </Link>
+        </li>
         {adminOptionsList.map(({ href, title }, index) => (
           <li key={index}>
             <Link href={href}>

@@ -104,7 +104,7 @@ const UpdateArtist = ({ user, artists }) => {
                 required
               />
             </div>
-            <div className="input-wrapper">
+            {/*<div className="input-wrapper">
               <label htmlFor="email">E-mail</label>
               <input
                 onChange={handleChange}
@@ -140,7 +140,7 @@ const UpdateArtist = ({ user, artists }) => {
                 type="text"
                 value={formValues.redeemLink}
               />
-            </div>
+              </div>*/}
             <div className="input-wrapper">
               <label htmlFor="isActive">Status</label>
               <select id="isActive" onChange={handleChange}>

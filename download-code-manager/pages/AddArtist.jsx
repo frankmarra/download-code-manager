@@ -16,7 +16,7 @@ const AddArtist = ({ user }) => {
   const [labels, setLabels] = useState()
   const [formValues, setFormValues] = useState({
     name: '',
-    email: '',
+    email: 'temp@temp.temp',
     url: '',
     logo: '',
     redeemLink: '',
@@ -82,7 +82,7 @@ const AddArtist = ({ user }) => {
               onSubmit={handleSubmit}
             >
               <div className="input-wrapper">
-                <label htmlFor="name">Name:</label>
+                <label htmlFor="name">Name</label>
                 <input
                   onChange={handleChange}
                   name="name"
@@ -92,8 +92,8 @@ const AddArtist = ({ user }) => {
                   required
                 />
               </div>
-              <div className="input-wrapper">
-                <label htmlFor="email">Artist E-mail:</label>
+              {/*<div className="input-wrapper">
+                <label htmlFor="email">Artist E-mail</label>
                 <input
                   onChange={handleChange}
                   name="email"
@@ -102,7 +102,7 @@ const AddArtist = ({ user }) => {
                 />
               </div>
               <div className="input-wrapper">
-                <label htmlFor="url">Artist Url:</label>
+                <label htmlFor="url">Artist Url</label>
                 <input
                   onChange={handleChange}
                   name="url"
@@ -111,7 +111,7 @@ const AddArtist = ({ user }) => {
                 />
               </div>
               <div className="input-wrapper">
-                <label htmlFor="logo">Artist Logo:</label>
+                <label htmlFor="logo">Artist Logo</label>
                 <input
                   onChange={handleChange}
                   name="logo"
@@ -120,15 +120,15 @@ const AddArtist = ({ user }) => {
                 />
               </div>
               <div className="input-wrapper">
-                <label htmlFor="redeemLink">Redemption Link:</label>
+                <label htmlFor="redeemLink">Redemption Link</label>
                 <input
                   onChange={handleChange}
                   name="redeemLink"
                   type="text"
                   value={formValues.redeemLink}
                 />
-              </div>
-              {user.user.isAdmin ? (
+        </div> */}
+              {/*user.user.isAdmin ? (
                 <div className="input-wrapper">
                   <label htmlFor="labelId">Artist Label:</label>
                   <select name="labelId" onChange={handleChange}>
@@ -142,7 +142,7 @@ const AddArtist = ({ user }) => {
                 </div>
               ) : (
                 <div></div>
-              )}
+              )*/}
               <button
                 type="submit"
                 className="btn primary"

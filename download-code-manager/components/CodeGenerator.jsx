@@ -154,11 +154,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
               </a>
             </div>
           </div>
-        ) : (
-          <div>
-            <h4>Please choose an artist and album to generate a code</h4>
-          </div>
-        )}
+        ) : null}
       </div>
     )
   )

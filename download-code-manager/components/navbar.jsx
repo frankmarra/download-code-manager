@@ -6,25 +6,37 @@ import styles from './navbar.module.css'
 // import axios from 'axios'
 // import Client from '../services/api'
 
-const adminOptionsList = [
-  { href: '/AddLabel', title: 'Add Label' },
-  { href: '/UpdateLabel', title: 'Update Label' },
-  { href: '/AddUser', title: 'Add User' },
-  { href: '/UpdateUser', title: 'Update User' },
-  { href: '/AddArtist', title: 'Add Artist' },
-  { href: '/UpdateArtist', title: 'Update Artist' },
-  { href: '/AddAlbum', title: 'Add Album' },
-  { href: '/UpdateAlbum', title: 'Update Album' }
-]
+const adminOptionsList = {
+  label: [
+    { href: '/AddLabel', title: 'Add Label' },
+    { href: '/UpdateLabel', title: 'Update Label' }
+  ],
+  user: [
+    { href: '/AddUser', title: 'Add User' },
+    { href: '/UpdateUser', title: 'Update User' }
+  ],
+  artist: [
+    { href: '/AddArtist', title: 'Add Artist' },
+    { href: '/UpdateArtist', title: 'Update Artist' }
+  ],
+  album: [
+    { href: '/AddAlbum', title: 'Add Album' },
+    { href: '/UpdateAlbum', title: 'Update Album' }
+  ]
+}
 
-const userOptionsList = [
-  { href: '/AddArtist', title: 'Add Artist' },
-  { href: '/UpdateArtist', title: 'Update Artist' },
-  { href: '/AddAlbum', title: 'Add Album' },
-  { href: '/UpdateAlbum', title: 'Update Album' },
-  { href: '/UpdateUser', title: 'Update User' },
-  { href: '/UpdateLabel', title: 'Update Label' }
-]
+const userOptionsList = {
+  label: [{ href: '/UpdateLabel', title: 'Update Label' }],
+  artist: [
+    { href: '/AddArtist', title: 'Add Artist' },
+    { href: '/UpdateArtist', title: 'Update Artist' }
+  ],
+  album: [
+    { href: '/AddAlbum', title: 'Add Album' },
+    { href: '/UpdateAlbum', title: 'Update Album' }
+  ],
+  user: [{ href: '/UpdateUser', title: 'Update User' }]
+}
 
 const Nav = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
@@ -51,18 +63,59 @@ const Nav = () => {
   if (auth) {
     userOptions = (
       <>
-        <li>
+        <li className="btn primary">
           <Link href={`/labels/${cookies.user.userLabelSlug}`}>
-            <a>Label Page</a>
+            <a>Home</a>
           </Link>
         </li>
-        {userOptionsList.map(({ href, title }, index) => (
-          <li key={index}>
-            <Link href={href}>
-              <a>{title}</a>
-            </Link>
-          </li>
-        ))}
+        <li className="dropdown">
+          <button className="btn primary">Label</button>
+          <div className="dropdown-content">
+            {userOptionsList.label.map(({ href, title }, index) => (
+              <li key={index}>
+                <Link href={href} key={index}>
+                  <a>{title}</a>
+                </Link>
+              </li>
+            ))}
+          </div>
+        </li>
+        <li className="dropdown">
+          <button className="btn primary">Artist</button>
+          <div className="dropdown-content">
+            {userOptionsList.artist.map(({ href, title }, index) => (
+              <li key={index}>
+                <Link href={href} key={index}>
+                  <a>{title}</a>
+                </Link>
+              </li>
+            ))}
+          </div>
+        </li>
+        <li className="dropdown">
+          <button className="btn primary">Album</button>
+          <div className="dropdown-content">
+            {userOptionsList.album.map(({ href, title }, index) => (
+              <li key={index}>
+                <Link href={href} key={index}>
+                  <a>{title}</a>
+                </Link>
+              </li>
+            ))}
+          </div>
+        </li>
+        <li className="dropdown">
+          <button className="btn primary">User</button>
+          <div className="dropdown-content">
+            {userOptionsList.user.map(({ href, title }, index) => (
+              <li key={index}>
+                <Link href={href} key={index}>
+                  <a>{title}</a>
+                </Link>
+              </li>
+            ))}
+          </div>
+        </li>
         <li>
           <button className="btn primary" onClick={() => handleLogout()}>
             Log out
@@ -73,18 +126,59 @@ const Nav = () => {
 
     adminOptions = (
       <>
-        <li>
+        <li className="btn primary">
           <Link href={`/labels/${cookies.user.userLabelSlug}`}>
-            <a>Label Page</a>
+            <a>Home</a>
           </Link>
         </li>
-        {adminOptionsList.map(({ href, title }, index) => (
-          <li key={index}>
-            <Link href={href}>
-              <a>{title}</a>
-            </Link>
-          </li>
-        ))}
+        <li className="dropdown">
+          <button className="btn primary">Label</button>
+          <div className="dropdown-content">
+            {adminOptionsList.label.map(({ href, title }, index) => (
+              <li key={index}>
+                <Link href={href} key={index}>
+                  <a>{title}</a>
+                </Link>
+              </li>
+            ))}
+          </div>
+        </li>
+        <li className="dropdown">
+          <button className="btn primary">Artist</button>
+          <div className="dropdown-content">
+            {adminOptionsList.artist.map(({ href, title }, index) => (
+              <li key={index}>
+                <Link href={href} key={index}>
+                  <a>{title}</a>
+                </Link>
+              </li>
+            ))}
+          </div>
+        </li>
+        <li className="dropdown">
+          <button className="btn primary">Album</button>
+          <div className="dropdown-content">
+            {adminOptionsList.album.map(({ href, title }, index) => (
+              <li key={index}>
+                <Link href={href} key={index}>
+                  <a>{title}</a>
+                </Link>
+              </li>
+            ))}
+          </div>
+        </li>
+        <li className="dropdown">
+          <button className="btn primary">User</button>
+          <div className="dropdown-content">
+            {adminOptionsList.user.map(({ href, title }, index) => (
+              <li key={index}>
+                <Link href={href} key={index}>
+                  <a>{title}</a>
+                </Link>
+              </li>
+            ))}
+          </div>
+        </li>
         <li>
           <button className="btn primary" onClick={() => handleLogout()}>
             Log Out

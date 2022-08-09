@@ -10,28 +10,35 @@ import { useEffect, useState } from 'react'
 import Client from '../../services/api'
 import { useRouter } from 'next/router'
 
-export async function getStaticPaths() {
-  // if (process.env.SKIP_BUILD_STATIC_GENERATION) {
-  //   return {
-  //     paths: [],
-  //     fallback: 'blocking'
-  //   }
-  // }
+// export async function getStaticPaths() {
+//   // if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+//   //   return {
+//   //     paths: [],
+//   //     fallback: 'blocking'
+//   //   }
+//   // }
 
-  const res = await Client.get(`/labels`)
-  const labels = res.data
-  let paths = labels.map((label) => ({
-    params: { slug: label.slug }
-  }))
+//   const res = await Client.get(`/labels`)
+//   const labels = res.data
+//   let paths = labels.map((label) => ({
+//     params: { slug: label.slug }
+//   }))
 
-  return { paths, fallback: true }
-}
+//   return { paths, fallback: true }
+// }
 
-export async function getStaticProps({ params }) {
+// export async function getStaticProps({ params }) {
+//   const res = await Client.get(`/labels/${params.slug}`)
+//   const label = res.data
+
+//   return { props: { label }, revalidate: 10 }
+// }
+
+export async function getServerSideProps({ params }) {
   const res = await Client.get(`/labels/${params.slug}`)
   const label = res.data
 
-  return { props: { label }, revalidate: 10 }
+  return { props: { label } }
 }
 
 export default function LabelPage({ label }) {

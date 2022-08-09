@@ -133,3 +133,34 @@ main {
   width: min(400px, 100% - var(--space-md));
   margin: auto;
 }
+
+/* nav dropdowns */
+
+.dropdown {
+  /* position: relative; */
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  border-radius: 0.15rem;
+  padding: 10px;
+  font-size: 16px;
+  position: absolute;
+  background-color: #dfdfdf;
+  color: black;
+  z-index: 1;
+  
+}
+
+.dropdown-content li{
+  padding: 3px;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content li:hover {
+  background-color: #2D8EF2;
+  border-radius: 0.15rem;
+}

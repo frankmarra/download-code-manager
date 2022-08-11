@@ -16,7 +16,7 @@ const AddArtist = ({ user }) => {
   const [labels, setLabels] = useState()
   const [formValues, setFormValues] = useState({
     name: '',
-    email: 'temp@temp.temp',
+    email: null,
     url: '',
     logo: '',
     redeemLink: '',
@@ -40,9 +40,9 @@ const AddArtist = ({ user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await Client.post(`/labels/${formValues.labelId}`, formValues)
+    const res = await Client.post(`/labels/${user.user.labelId}`, formValues)
     setNewArtist(res.data)
-    setFormValues({ name: '', url: '' })
+    setFormValues({ name: '' })
     toggleArtistAdded(true)
   }
 

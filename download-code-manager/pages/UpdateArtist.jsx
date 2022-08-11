@@ -144,7 +144,7 @@ const UpdateArtist = ({ user, artists }) => {
             <div className="input-wrapper">
               <label htmlFor="isActive">Status</label>
               <select id="isActive" onChange={handleChange}>
-                <option value="">--Please choose an artist--</option>
+                <option value="">--Set Status--</option>
                 <option value={true}>Active</option>
                 <option value={false}>Inactive</option>
               </select>

@@ -13,6 +13,7 @@ Client.interceptors.request.use(
       let token = cookieToken
       if (token) {
         config.headers['authorization'] = `Bearer ${token.token}`
+        config.headers['Access-Control-Allow-Origin'] = '*'
       }
     }
     return config

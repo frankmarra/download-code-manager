@@ -5,6 +5,7 @@ import Client from '../services/api'
 const CodeGenerator = ({ artists, redeemLink, labelId }) => {
   const [activeArtists, setActiveArtists] = useState()
   const [activeAlbums, setActiveAlbums] = useState()
+  const [activeCodes, setActiveCodes] = useState()
   const [randomCode, setRandomCode] = useState()
   const [clicked, setClicked] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -25,9 +26,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
   useEffect(() => {
     const getActiveAlbums = async () => {
       let res = await Client.get(
-        `/labels/${labelId}/artists/${
-          activeArtists[formValues.artist].id
-        }/active`
+        `/labels/${labelId}/artists/${formValues.artist}/active`
       )
       let albums = res.data
       setActiveAlbums(albums)
@@ -36,32 +35,40 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
   }, [formValues.artist])
 
   useEffect(() => {
+    const getActiveCodes = async () => {
+      const res = await Client.get(
+        `/labels/${labelId}/artists/${formValues.artist}/albums/${formValues.album}/codes/unused`
+      )
+      let codes = res.data
+      setActiveCodes(codes)
+    }
+    formValues.album ? getActiveCodes() : null
+  }, [formValues.album])
+
+  useEffect(() => {
     const removeCode = async () => {
       if (randomCode) {
         let codeId = parseInt(randomCode.id)
         await Client.put(
-          `/labels/${labelId}/artists/${artists[formValues.artist].id}/albums/${
-            artists[formValues.artist].Albums[formValues.album].id
-          }/codes/${codeId}`,
+          `/labels/${labelId}/artists/${formValues.artist}/albums/${formValues.album}/codes/${codeId}`,
           { used: true }
         )
       }
     }
     removeCode(randomCode)
   }, [randomCode])
+
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+    setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await Client.get(
-      `/labels/${labelId}/artists/${artists[formValues.artist].id}/albums/${
-        artists[formValues.artist].Albums[formValues.album].id
-      }/codes/unused`
-    )
-    let randomNumber = Math.floor(Math.random() * res.data.length)
-    setRandomCode(res.data[randomNumber])
+    // const res = await Client.get(
+    //   `/labels/${labelId}/artists/${formValues.artist}/albums/${formValues.album}/codes/unused`
+    // )
+    let randomNumber = Math.floor(Math.random() * activeCodes.length)
+    setRandomCode(activeCodes[randomNumber])
     setClicked(true)
   }
 
@@ -86,10 +93,10 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
           {activeArtists.length > 0 ? (
             <div className="input-wrapper">
               <label htmlFor="artist">Artist</label>
-              <select name="artist" onChange={handleChange}>
+              <select id="artist" onChange={handleChange}>
                 <option value="">--Please choose an artist--</option>
                 {activeArtists.map((artist, index) => (
-                  <option key={index} value={index}>
+                  <option key={index} value={artist.id}>
                     {artist.name}
                   </option>
                 ))}
@@ -103,10 +110,10 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
             (activeAlbums.length > 0 ? (
               <div className="input-wrapper">
                 <label htmlFor="album">Album</label>
-                <select name="album" onChange={handleChange}>
+                <select id="album" onChange={handleChange}>
                   <option value="">--Please choose an album--</option>
                   {activeAlbums.map((album, index) => (
-                    <option key={index} value={index}>
+                    <option key={index} value={album.id}>
                       {album.name}
                     </option>
                   ))}
@@ -115,20 +122,17 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
             ) : (
               <h4>No Albums for this Artist</h4>
             ))}
-          {formValues.album != '' ? (
+          {formValues.album != '' && activeCodes ? (
             clicked ? (
               <h4>Your Code:</h4>
-            ) : artists[formValues.artist].Albums[formValues.album].Codes
-                .length > 0 ? (
+            ) : activeCodes.length > 0 ? (
               <button className="btn primary" type="submit">
                 Generate Code
               </button>
             ) : (
               <h4>No Codes For This Album</h4>
             )
-          ) : (
-            <div></div>
-          )}
+          ) : null}
         </form>
         {randomCode ? (
           <div className="random-code-wrapper u-flow">
@@ -149,7 +153,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
             </div>
 
             <div className="btn primary">
-              <a href={redeemLink} target="_blank">
+              <a href={`https://${redeemLink}`} target="_blank">
                 Redeem Here
               </a>
             </div>

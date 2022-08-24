@@ -170,9 +170,9 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
               </a>
             </div>
 
-            <div className="btn primary">
-              <button onClick={() => reset()}>Get Another Code</button>
-            </div>
+            <button className="btn primary" onClick={() => reset()}>
+              Get Another Code
+            </button>
           </div>
         ) : null}
       </div>

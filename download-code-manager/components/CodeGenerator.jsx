@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Client from '../services/api'
 
-const CodeGenerator = ({ artists, redeemLink, labelId }) => {
-  const [activeArtists, setActiveArtists] = useState()
+const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
+  const [activeArtists, setActiveArtists] = useState([
+    { name: '--please choose an artist--', id: 0 }
+  ])
   const [activeAlbums, setActiveAlbums] = useState()
   const [activeCodes, setActiveCodes] = useState()
   const [randomCode, setRandomCode] = useState()
@@ -18,7 +20,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
     const getActiveArtists = async () => {
       let res = await Client.get(`/labels/${labelId}/active`)
       let artists = res.data
-      setActiveArtists(artists)
+      setActiveArtists([...activeArtists, ...artists])
     }
     getActiveArtists()
   }, [])
@@ -82,6 +84,17 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
     }
   }
 
+  const reset = () => {
+    document.getElementById('artist-album-select').reset()
+    setFormValues({
+      artist: '',
+      album: ''
+    })
+    setClicked(false)
+    setCopied(false)
+    setRandomCode()
+  }
+
   return (
     activeArtists && (
       <div className="artist-album-select-wrapper">
@@ -94,7 +107,6 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
             <div className="input-wrapper">
               <label htmlFor="artist">Artist</label>
               <select id="artist" onChange={handleChange}>
-                <option value="">--Please choose an artist--</option>
                 {activeArtists.map((artist, index) => (
                   <option key={index} value={artist.id}>
                     {artist.name}
@@ -156,6 +168,10 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
               <a href={`https://${redeemLink}`} target="_blank">
                 Redeem Here
               </a>
+            </div>
+
+            <div className="btn primary">
+              <button onClick={() => reset()}>Get Another Code</button>
             </div>
           </div>
         ) : null}

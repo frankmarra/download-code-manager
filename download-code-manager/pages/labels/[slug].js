@@ -85,6 +85,7 @@ export default function LabelPage({ label }) {
             <h3>Generate Album Code:</h3>
             <CodeGenerator
               labelId={label.id}
+              labelSlug={label.slug}
               artists={label.Artists}
               redeemLink={label.redeemLink}
             />

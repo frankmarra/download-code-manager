@@ -77,7 +77,7 @@ main {
   border: 1px dashed;
   border-radius: 0.15rem;
   text-align: center;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .btn.primary:not(:disabled) {

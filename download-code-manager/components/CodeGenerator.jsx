@@ -3,9 +3,7 @@ import axios from 'axios'
 import Client from '../services/api'
 
 const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
-  const [activeArtists, setActiveArtists] = useState([
-    { name: '--please choose an artist--', id: 0 }
-  ])
+  const [activeArtists, setActiveArtists] = useState()
   const [activeAlbums, setActiveAlbums] = useState()
   const [activeCodes, setActiveCodes] = useState()
   const [randomCode, setRandomCode] = useState()
@@ -20,7 +18,10 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
     const getActiveArtists = async () => {
       let res = await Client.get(`/labels/${labelId}/active`)
       let artists = res.data
-      setActiveArtists([...activeArtists, ...artists])
+      setActiveArtists([
+        { name: '--please choose an artist--', id: 0 },
+        ...artists
+      ])
     }
     getActiveArtists()
   }, [])
@@ -31,7 +32,11 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
         `/labels/${labelId}/artists/${formValues.artist}/active`
       )
       let albums = res.data
-      setActiveAlbums(albums)
+
+      setActiveAlbums([
+        { name: '--please choose an album--', id: 0 },
+        ...albums
+      ])
     }
     formValues.artist ? getActiveAlbums() : null
   }, [formValues.artist])
@@ -59,6 +64,10 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
     }
     removeCode(randomCode)
   }, [randomCode])
+
+  const handleArtistChange = (e) => {
+    setFormValues({ album: '0', [e.target.id]: e.target.value })
+  }
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.id]: e.target.value })
@@ -106,7 +115,11 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
           {activeArtists.length > 0 ? (
             <div className="input-wrapper">
               <label htmlFor="artist">Artist</label>
-              <select id="artist" onChange={handleChange}>
+              <select
+                id="artist"
+                onChange={handleArtistChange}
+                value={formValues.artist}
+              >
                 {activeArtists.map((artist, index) => (
                   <option key={index} value={artist.id}>
                     {artist.name}
@@ -119,11 +132,14 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
           )}
           {formValues.artist != '' &&
             activeAlbums &&
-            (activeAlbums.length > 0 ? (
+            (activeAlbums.length > 1 ? (
               <div className="input-wrapper">
                 <label htmlFor="album">Album</label>
-                <select id="album" onChange={handleChange}>
-                  <option value="">--Please choose an album--</option>
+                <select
+                  id="album"
+                  onChange={handleChange}
+                  value={formValues.album}
+                >
                   {activeAlbums.map((album, index) => (
                     <option key={index} value={album.id}>
                       {album.name}
@@ -134,7 +150,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
             ) : (
               <h4>No Albums for this Artist</h4>
             ))}
-          {formValues.album != '' && activeCodes ? (
+          {formValues.album != '' && formValues.album != '0' && activeCodes ? (
             clicked ? (
               <h4>Your Code:</h4>
             ) : activeCodes.length > 0 ? (
@@ -170,7 +186,11 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
               </a>
             </div>
 
-            <button className="btn primary" onClick={() => reset()}>
+            <button
+              className="btn primary"
+              onClick={() => reset()}
+              style={{ width: '100%' }}
+            >
               Get Another Code
             </button>
           </div>

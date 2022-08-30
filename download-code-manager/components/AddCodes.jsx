@@ -50,8 +50,16 @@ const AddCodes = ({ artists }) => {
     formValues.albumCodes ? createCodeArray() : null
   }, [formValues.albumCodes])
 
+  const handleArtistChange = (e) => {
+    setFormValues({
+      album: '',
+      albumCodes: '',
+      [e.target.id]: e.target.value
+    })
+  }
+
   const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value })
+    setFormValues({ ...formValues, [e.target.id]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
@@ -96,8 +104,14 @@ const AddCodes = ({ artists }) => {
       >
         <div className="input-wrapper">
           <label htmlFor="artist">Artist</label>
-          <select name="artist" onChange={handleChange}>
-            <option value="">--Please choose an artist--</option>
+          <select
+            id="artist"
+            onChange={handleArtistChange}
+            defaultValue="--please choose an artist--"
+          >
+            <option selected value="">
+              --Please choose an artist--
+            </option>
             {artists
               ? artists.map((artist, index) => (
                   <option key={index} value={index}>
@@ -110,7 +124,7 @@ const AddCodes = ({ artists }) => {
         {formValues.artist && artists[formValues.artist].Albums.length > 0 ? (
           <div className="input-wrapper">
             <label htmlFor="album">Album</label>
-            <select name="album" onChange={handleChange}>
+            <select id="album" onChange={handleChange} value={formValues.album}>
               <option value="">--Please choose an album--</option>
               {artists[formValues.artist].Albums.map((album, index) => (
                 <option key={index} value={album.id}>
@@ -136,7 +150,7 @@ const AddCodes = ({ artists }) => {
             </div>
             <label htmlFor="albumCodes">Codes</label>
             <textarea
-              name="albumCodes"
+              id="albumCodes"
               placeholder="Enter your codes separated by a space"
               cols="50"
               rows="8"

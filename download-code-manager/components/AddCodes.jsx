@@ -76,6 +76,7 @@ const AddCodes = ({ artists }) => {
       // }
     )
     setCodesAdded(true)
+    setTimeout(addMoreCodes, 5000)
   }
 
   const addMoreCodes = () => {
@@ -86,13 +87,13 @@ const AddCodes = ({ artists }) => {
     })
     setCodesAdded(false)
   }
+  // <button className="btn primary" type="submit" onClick={addMoreCodes}>
+  //   Add more codes?
+  // </button>
 
   return codesAdded ? (
     <div>
       <h2>Codes Added!</h2>
-      <button className="btn primary" type="submit" onClick={addMoreCodes}>
-        Add more codes?
-      </button>
     </div>
   ) : (
     <div className="form-container u-flow">
@@ -110,7 +111,7 @@ const AddCodes = ({ artists }) => {
             defaultValue="--please choose an artist--"
           >
             <option selected value="">
-              --Please choose an artist--
+              --Choose Artist--
             </option>
             {artists
               ? artists.map((artist, index) => (
@@ -125,7 +126,7 @@ const AddCodes = ({ artists }) => {
           <div className="input-wrapper">
             <label htmlFor="album">Album</label>
             <select id="album" onChange={handleChange} value={formValues.album}>
-              <option value="">--Please choose an album--</option>
+              <option value="">--Choose Album--</option>
               {artists[formValues.artist].Albums.map((album, index) => (
                 <option key={index} value={album.id}>
                   {album.name}

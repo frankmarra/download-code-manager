@@ -63,11 +63,6 @@ const Nav = () => {
   if (auth) {
     userOptions = (
       <>
-        <li className="btn primary">
-          <Link href={`/labels/${cookies.user.userLabelSlug}`}>
-            <a>Home</a>
-          </Link>
-        </li>
         <li className="dropdown">
           <button className="btn primary">Label</button>
           <div className="dropdown-content">
@@ -126,11 +121,6 @@ const Nav = () => {
 
     adminOptions = (
       <>
-        <li className="btn primary">
-          <Link href={`/labels/${cookies.user.userLabelSlug}`}>
-            <a>Home</a>
-          </Link>
-        </li>
         <li className="dropdown">
           <button className="btn primary">Label</button>
           <div className="dropdown-content">
@@ -198,7 +188,14 @@ const Nav = () => {
 
   return (
     <>
-      {user ? <div className={styles.greeting}>Hello {user.name}</div> : null}
+      {user ? (
+        <div className={styles.greeting}>
+          <p>
+            Hello,
+            <a href={`/labels/${cookies.user.userLabelSlug}`}> {user.name}</a>
+          </p>
+        </div>
+      ) : null}
       <nav className={styles.nav}>
         <ul className={styles.navbar}>
           {auth ? (user.isAdmin ? adminOptions : userOptions) : publicOptions}

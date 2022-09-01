@@ -42,7 +42,14 @@ const AddArtist = ({ user }) => {
     e.preventDefault()
     const res = await Client.post(`/labels/${user.user.labelId}`, formValues)
     setNewArtist(res.data)
-    setFormValues({ name: '' })
+    setFormValues({
+      name: '',
+      email: null,
+      url: '',
+      logo: '',
+      redeemLink: '',
+      labelId: user.user.labelId
+    })
     toggleArtistAdded(true)
   }
 
@@ -56,6 +63,7 @@ const AddArtist = ({ user }) => {
             <p>Would you like to add another artist?</p>
             <button
               className="btn primary"
+              type="reset"
               onClick={() => {
                 toggleArtistAdded(false)
               }}

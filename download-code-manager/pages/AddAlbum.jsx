@@ -45,7 +45,7 @@ const AddAlbum = ({ user }) => {
       formValues
     )
     setNewAlbum(res.data)
-    setFormValues({ name: '' })
+    setFormValues({ name: '', artistId: '' })
     toggleAlbumAdded(true)
   }
 
@@ -59,6 +59,7 @@ const AddAlbum = ({ user }) => {
             <p>Would you like to add another album?</p>
             <button
               className="btn primary"
+              type="reset"
               onClick={() => {
                 toggleAlbumAdded(false)
               }}

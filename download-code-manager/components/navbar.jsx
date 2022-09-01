@@ -58,6 +58,7 @@ const Nav = () => {
   const handleLogout = async () => {
     removeCookie('user', { path: '/' })
     setAuth(false)
+    setUser()
     router.push('/')
   }
   if (auth) {

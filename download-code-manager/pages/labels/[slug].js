@@ -65,15 +65,15 @@ export default function LabelPage({ label }) {
       </Head>
       <section className="u-flex-column">
         <a href={label.url}>
-          <img
-            src={
-              label.logo ? label.logo : `/images/pexels-hermaion-104084.jpeg`
-            }
-            className={utilStyles.labelLogo}
-            height={200}
-            width={200}
-            alt={label.name}
-          />
+          {label.logo ? (
+            <img
+              src={label.logo}
+              className={utilStyles.labelLogo}
+              height={200}
+              width={200}
+              alt={label.name}
+            />
+          ) : null}
         </a>
         <h1 className={utilStyles.labelName}>{label.name}</h1>
         {auth ? (

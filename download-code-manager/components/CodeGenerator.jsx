@@ -3,7 +3,10 @@ import axios from 'axios'
 import Client from '../services/api'
 
 const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
-  const [activeArtists, setActiveArtists] = useState()
+  const [activeArtists, setActiveArtists] = useState({
+    name: '--Choose Artist--',
+    id: 0
+  })
   const [activeAlbums, setActiveAlbums] = useState()
   const [activeCodes, setActiveCodes] = useState()
   const [randomCode, setRandomCode] = useState()
@@ -18,10 +21,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
     const getActiveArtists = async () => {
       let res = await Client.get(`/labels/${labelId}/active`)
       let artists = res.data
-      setActiveArtists([
-        { name: '--please choose an artist--', id: 0 },
-        ...artists
-      ])
+      setActiveArtists([{ name: '--Choose Artist--', id: 0 }, ...artists])
     }
     getActiveArtists()
   }, [])
@@ -33,10 +33,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
       )
       let albums = res.data
 
-      setActiveAlbums([
-        { name: '--please choose an album--', id: 0 },
-        ...albums
-      ])
+      setActiveAlbums([{ name: '--Choose Album--', id: 0 }, ...albums])
     }
     formValues.artist ? getActiveAlbums() : null
   }, [formValues.artist])
@@ -105,7 +102,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
   }
 
   return (
-    activeArtists && (
+    artists && (
       <div className="artist-album-select-wrapper">
         <form
           className="artist-album-select-form u-flow"
@@ -113,19 +110,25 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
           name="artist-album-select"
           onSubmit={handleSubmit}
         >
-          {activeArtists.length > 0 ? (
+          {artists.length > 0 ? (
             <div className="input-wrapper">
               <label htmlFor="artist">Artist</label>
               <select
                 id="artist"
                 onChange={handleArtistChange}
                 value={formValues.artist}
+                defaultValue="--Choose Artist--"
               >
-                {activeArtists.map((artist, index) => (
-                  <option key={index} value={artist.id}>
-                    {artist.name}
-                  </option>
-                ))}
+                <option selected value="">
+                  --Choose Artist--
+                </option>
+                {artists.map((artist, index) =>
+                  artist.isActive ? (
+                    <option key={index} value={artist.id}>
+                      {artist.name}
+                    </option>
+                  ) : null
+                )}
               </select>
             </div>
           ) : (

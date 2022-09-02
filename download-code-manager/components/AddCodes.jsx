@@ -108,7 +108,7 @@ const AddCodes = ({ artists }) => {
           <select
             id="artist"
             onChange={handleArtistChange}
-            defaultValue="--please choose an artist--"
+            defaultValue="--Choose Artist--"
           >
             <option selected value="">
               --Choose Artist--

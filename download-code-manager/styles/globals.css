@@ -131,7 +131,7 @@ main {
   background-color: var(--bg-color);
   border-radius: 0.25rem;
   text-align: center;
-  width: min(400px, 100% - var(--space-md));
+  /* width: min(400px, 100% - var(--space-md)); */
   margin: auto;
 }
 

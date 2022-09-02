@@ -110,6 +110,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
         <form
           className="artist-album-select-form u-flow"
           id="artist-album-select"
+          name="artist-album-select"
           onSubmit={handleSubmit}
         >
           {activeArtists.length > 0 ? (

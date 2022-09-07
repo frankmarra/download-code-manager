@@ -85,6 +85,10 @@ export default function LabelPage({ label }) {
     <>
       <Head>
         <title>{label.name}</title>
+        <script
+          src="https://kit.fontawesome.com/ae0d597aae.js"
+          crossOrigin="anonymous"
+        ></script>
       </Head>
       <section className="u-flex-column">
         <a href={label.url}>
@@ -105,7 +109,6 @@ export default function LabelPage({ label }) {
           </div>
         ) : !label.pagePassword || codeAuth == true ? (
           <div className="code-generator u-flow">
-            <h3>Generate Album Code:</h3>
             <CodeGenerator
               labelId={label.id}
               labelSlug={label.slug}

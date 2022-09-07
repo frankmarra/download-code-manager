@@ -94,7 +94,6 @@ const CodeGenerator = ({
   }
 
   const reset = () => {
-    document.getElementById('artist-album-select').reset()
     setFormValues({
       artist: '',
       album: ''
@@ -102,76 +101,85 @@ const CodeGenerator = ({
     setClicked(false)
     setCopied(false)
     setRandomCode()
+    // document.getElementById('artist-album-select').reset()
   }
 
   return (
     artists && (
       <div className="artist-album-select-wrapper">
-        <form
-          className="artist-album-select-form u-flow"
-          id="artist-album-select"
-          name="artist-album-select"
-          onSubmit={handleSubmit}
-        >
-          {artists.length > 0 ? (
-            <div className="input-wrapper">
-              <label htmlFor="artist">Artist</label>
-              <select
-                id="artist"
-                onChange={handleArtistChange}
-                value={formValues.artist}
-                defaultValue="--Choose Artist--"
-              >
-                <option selected value="">
-                  --Choose Artist--
-                </option>
-                {artists.map((artist, index) =>
-                  artist.isActive ? (
-                    <option key={index} value={artist.id}>
-                      {artist.name}
+        {!clicked ? (
+          <>
+            <h3 style={{ textAlign: 'center' }}>Generate Album Code:</h3>
+            <form
+              className="artist-album-select-form u-flow"
+              id="artist-album-select"
+              name="artist-album-select"
+              onSubmit={handleSubmit}
+            >
+              {artists.length > 0 ? (
+                <div className="input-wrapper">
+                  <label htmlFor="artist">Artist</label>
+                  <select
+                    id="artist"
+                    onChange={handleArtistChange}
+                    value={formValues.artist}
+                    defaultValue="--Choose Artist--"
+                  >
+                    <option selected value="">
+                      --Choose Artist--
                     </option>
-                  ) : null
-                )}
-              </select>
-            </div>
-          ) : (
-            <h4>No Artists Available</h4>
-          )}
-          {formValues.artist != '' &&
-            activeAlbums &&
-            (activeAlbums.length > 1 ? (
-              <div className="input-wrapper">
-                <label htmlFor="album">Album</label>
-                <select
-                  id="album"
-                  onChange={handleChange}
-                  value={formValues.album}
-                >
-                  {activeAlbums.map((album, index) => (
-                    <option key={index} value={album.id}>
-                      {album.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            ) : (
-              <h4>No Albums for this Artist</h4>
-            ))}
-          {formValues.album != '' && formValues.album != '0' && activeCodes ? (
-            clicked ? (
-              <h4>Your Code:</h4>
-            ) : activeCodes.length > 0 ? (
-              <button className="btn primary" type="submit">
-                Generate Code
-              </button>
-            ) : (
-              <h4>No Codes For This Album</h4>
-            )
-          ) : null}
-        </form>
+                    {artists.map((artist, index) =>
+                      artist.isActive ? (
+                        <option key={index} value={artist.id}>
+                          {artist.name}
+                        </option>
+                      ) : null
+                    )}
+                  </select>
+                </div>
+              ) : (
+                <h4>No Artists Available</h4>
+              )}
+              {formValues.artist != '' &&
+                activeAlbums &&
+                (activeAlbums.length > 1 ? (
+                  <div className="input-wrapper">
+                    <label htmlFor="album">Album</label>
+                    <select
+                      id="album"
+                      onChange={handleChange}
+                      value={formValues.album}
+                    >
+                      {activeAlbums.map((album, index) => (
+                        <option key={index} value={album.id}>
+                          {album.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <h4>No Albums for this Artist</h4>
+                ))}
+              {formValues.album != '' &&
+              formValues.album != '0' &&
+              activeCodes ? (
+                clicked ? (
+                  <h4>Your Code:</h4>
+                ) : activeCodes.length > 0 ? (
+                  <button className="btn primary" type="submit">
+                    Generate Code
+                  </button>
+                ) : (
+                  <h4>No Codes For This Album</h4>
+                )
+              ) : null}
+            </form>
+          </>
+        ) : null}
         {randomCode ? (
           <div className="random-code-wrapper u-flow">
             <div className="random-code u-flow">
+              <h4 style={{ color: 'black' }}>Your code:</h4>
               <h4>{randomCode.albumCode}</h4>
               {copied ? (
                 <button className="btn copied" disabled>

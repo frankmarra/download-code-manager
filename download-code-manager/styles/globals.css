@@ -165,3 +165,27 @@ main {
   background-color: var(--link-color-hover);
   border-radius: 0.15rem;
 }
+
+.burger-button {
+  border: none;
+  background-color: transparent;
+  height: 100%;
+}
+.burger-menu ul{
+  position: absolute;
+  top: 7vh;
+  right: 2.8%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+ 
+}
+
+.fa-bars {
+  color: white;
+}
+
+
+/* .burger-menu ul li {
+  : right;
+} */

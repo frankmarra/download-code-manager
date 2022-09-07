@@ -42,6 +42,8 @@ const Nav = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const [auth, setAuth] = useState(false)
   const [user, setUser] = useState()
+  const [viewWidth, setViewWidth] = useState()
+  const [menuOpen, setMenuOpen] = useState(false)
   const router = useRouter()
   useEffect(() => {
     if (cookies.user) {
@@ -52,6 +54,14 @@ const Nav = () => {
       setUser()
     }
   }, [cookies.user])
+
+  useEffect(() => {
+    setInterval(checkWidth, 100)
+  }, [viewWidth])
+
+  const checkWidth = () => {
+    setViewWidth(window.screen.width)
+  }
   let userOptions
   let adminOptions
 
@@ -69,7 +79,13 @@ const Nav = () => {
           <div className="dropdown-content">
             {userOptionsList.label.map(({ href, title }, index) => (
               <li key={index}>
-                <Link href={href} key={index}>
+                <Link
+                  href={href}
+                  key={index}
+                  onClick={() => {
+                    !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+                  }}
+                >
                   <a>{title}</a>
                 </Link>
               </li>
@@ -198,9 +214,33 @@ const Nav = () => {
         </div>
       ) : null}
       <nav className={styles.nav}>
-        <ul className={styles.navbar}>
-          {auth ? (user.isAdmin ? adminOptions : userOptions) : publicOptions}
-        </ul>
+        {viewWidth < 800 ? (
+          <div>
+            <button
+              className="burger-button"
+              onClick={() => {
+                !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+              }}
+            >
+              <i className="fa-solid fa-bars"></i>
+            </button>
+            {menuOpen && (
+              <div className="burger-menu">
+                <ul className={styles.navbar}>
+                  {auth
+                    ? user.isAdmin
+                      ? adminOptions
+                      : userOptions
+                    : publicOptions}
+                </ul>
+              </div>
+            )}
+          </div>
+        ) : (
+          <ul className={styles.navbar}>
+            {auth ? (user.isAdmin ? adminOptions : userOptions) : publicOptions}
+          </ul>
+        )}
       </nav>
     </>
   )

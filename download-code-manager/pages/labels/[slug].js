@@ -44,6 +44,11 @@ export async function getServerSideProps({ params }) {
 export default function LabelPage({ label }) {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const [auth, setAuth] = useState(false)
+  const [codeAuth, setCodeAuth] = useState(false)
+  const [signinError, setSigninError] = useState(false)
+  const [generatorPasswordValue, setGeneratorPasswordValue] = useState({
+    pagePassword: ''
+  })
   const router = useRouter()
 
   useEffect(() => {
@@ -56,6 +61,24 @@ export default function LabelPage({ label }) {
 
   if (router.isFallback) {
     return <div>Loading...</div>
+  }
+
+  const handleGeneratorPasswordChange = (e) => {
+    setGeneratorPasswordValue({
+      ...generatorPasswordValue,
+      [e.target.id]: e.target.value
+    })
+  }
+
+  const handleGeneratorPasswordSubmit = (e) => {
+    e.preventDefault()
+    if (label.pagePassword == generatorPasswordValue.pagePassword) {
+      setCodeAuth(true)
+      setSigninError(false)
+    } else {
+      setSigninError(true)
+      document.getElementById('generator-password-form').reset()
+    }
   }
 
   return label ? (
@@ -80,7 +103,7 @@ export default function LabelPage({ label }) {
           <div className="add-codes">
             <AddCodes artists={label.Artists} />
           </div>
-        ) : (
+        ) : !label.pagePassword || codeAuth == true ? (
           <div className="code-generator u-flow">
             <h3>Generate Album Code:</h3>
             <CodeGenerator
@@ -88,8 +111,41 @@ export default function LabelPage({ label }) {
               labelSlug={label.slug}
               artists={label.Artists}
               redeemLink={label.redeemLink}
+              pagePassword={label.pagePassword}
             />
           </div>
+        ) : (
+          <section className="form-container">
+            <div id="generator-password" className="u-flex-column u-flow">
+              <h1>Enter Password for to access codes</h1>
+              <form
+                className="generator-password-form u-flex-column u-flow"
+                id="generator-password-form"
+                onSubmit={handleGeneratorPasswordSubmit}
+              >
+                <div className="input-wrapper">
+                  <label htmlFor="pagePassword">Password</label>
+                  <input
+                    onChange={handleGeneratorPasswordChange}
+                    id="pagePassword"
+                    type="password"
+                    value={generatorPasswordValue.pagePassword}
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="btn primary"
+                    disabled={!generatorPasswordValue.pagePassword}
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </form>
+              {signinError ? (
+                <h3>You have entered the wrong password. Please try again.</h3>
+              ) : null}
+            </div>
+          </section>
         )}
       </section>
     </>

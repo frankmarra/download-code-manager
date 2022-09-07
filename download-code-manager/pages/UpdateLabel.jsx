@@ -22,6 +22,7 @@ const UpdateLabel = ({ user, label }) => {
     email: label ? label.email : '',
     url: label ? label.url : '',
     logo: label ? label.logo : '',
+    pagePassword: label ? label.pagePassword : '',
     redeemLink: label ? label.redeemLink : ''
   })
   const router = useRouter()
@@ -70,6 +71,18 @@ const UpdateLabel = ({ user, label }) => {
                 id="logo"
                 type="text"
                 value={formValues.logo}
+              />
+            </div>
+            <div className="input-wrapper">
+              <label htmlFor="pagePassword">
+                Password to access code generator. Leave blank if you do not
+                want to password protect your codes.
+              </label>
+              <input
+                onChange={handleChange}
+                id="pagePassword"
+                type="text"
+                value={formValues.pagePassword}
               />
             </div>
             <div className="input-wrapper">

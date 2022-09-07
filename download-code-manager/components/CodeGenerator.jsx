@@ -2,7 +2,13 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Client from '../services/api'
 
-const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
+const CodeGenerator = ({
+  artists,
+  redeemLink,
+  labelId,
+  labelSlug,
+  pagePassword
+}) => {
   const [activeArtists, setActiveArtists] = useState({
     name: '--Choose Artist--',
     id: 0
@@ -72,9 +78,6 @@ const CodeGenerator = ({ artists, redeemLink, labelId, labelSlug }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    // const res = await Client.get(
-    //   `/labels/${labelId}/artists/${formValues.artist}/albums/${formValues.album}/codes/unused`
-    // )
     let randomNumber = Math.floor(Math.random() * activeCodes.length)
     setRandomCode(activeCodes[randomNumber])
     setClicked(true)

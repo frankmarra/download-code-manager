@@ -1,8 +1,8 @@
 :root {
   --bg-color: hsl(0 0% 95%);
   --text-color: hsl(0 0% 8%);
-  --link-color: hsl(210 88% 56%);
-  --link-color-hover: hsl(210 88% 50%);
+  --link-color: hsl(271, 100%, 35%);
+  --link-color-hover: rgb(188, 158, 215);
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 2rem;
@@ -107,7 +107,7 @@ main {
   font-size: 1.2rem;
   font-weight: bold;
   letter-spacing: 0.025rem;
-  color:#2D8EF2;
+  color: var(--link-color);
   text-align: center;
 
 }
@@ -162,6 +162,6 @@ main {
 }
 
 .dropdown-content li:hover {
-  background-color: #2D8EF2;
+  background-color: var(--link-color-hover);
   border-radius: 0.15rem;
 }

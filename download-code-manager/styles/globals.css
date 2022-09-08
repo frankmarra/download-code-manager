@@ -154,6 +154,22 @@ main {
   
 }
 
+@media screen and (max-width: 800px) {
+  .navli {
+    font-size: 16px;
+  }
+  .dropdown-content {
+    
+    right: 80%;
+    /* top: 0%; */
+    transform: translateY(-60%);
+    font-size: 14px;
+  }
+  .dropdown:hover {
+    display: inline;
+  }
+}
+
 .dropdown-content li{
   padding: 3px;
 }
@@ -178,7 +194,6 @@ main {
   display: flex;
   flex-flow: column nowrap;
   align-items: flex-end;
- 
 }
 
 .fa-bars {
@@ -186,6 +201,6 @@ main {
 }
 
 
-/* .burger-menu ul li {
-  : right;
-} */
+.burger-menu ul li {
+  width: 100%;
+}

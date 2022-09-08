@@ -20,3 +20,9 @@
   list-style-type: none;
 }
 
+@media screen and (max-width: 800px) {
+  .navbar {
+    flex-flow: column;
+    gap: clamp(var(--space-xs), .5vh, var(--space-md));
+  }
+}

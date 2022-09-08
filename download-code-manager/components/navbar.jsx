@@ -75,54 +75,72 @@ const Nav = () => {
     userOptions = (
       <>
         <li className="dropdown">
-          <button className="btn primary">Label</button>
+          <div className="btn primary navli">Label</div>
           <div className="dropdown-content">
             {userOptionsList.label.map(({ href, title }, index) => (
               <li key={index}>
-                <Link
-                  href={href}
-                  key={index}
-                  onClick={() => {
-                    !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
-                  }}
-                >
-                  <a>{title}</a>
+                <Link href={href} key={index}>
+                  <a
+                    onClick={() => {
+                      !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+                    }}
+                  >
+                    {title}
+                  </a>
                 </Link>
               </li>
             ))}
           </div>
         </li>
         <li className="dropdown">
-          <button className="btn primary">Artist</button>
+          <div className="btn primary navli">Artist</div>
           <div className="dropdown-content">
             {userOptionsList.artist.map(({ href, title }, index) => (
               <li key={index}>
                 <Link href={href} key={index}>
-                  <a>{title}</a>
+                  <a
+                    onClick={() => {
+                      !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+                    }}
+                  >
+                    {title}
+                  </a>
                 </Link>
               </li>
             ))}
           </div>
         </li>
         <li className="dropdown">
-          <button className="btn primary">Album</button>
+          <div className="btn primary navli">Album</div>
           <div className="dropdown-content">
             {userOptionsList.album.map(({ href, title }, index) => (
               <li key={index}>
                 <Link href={href} key={index}>
-                  <a>{title}</a>
+                  <a
+                    onClick={() => {
+                      !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+                    }}
+                  >
+                    {title}
+                  </a>
                 </Link>
               </li>
             ))}
           </div>
         </li>
         <li className="dropdown">
-          <button className="btn primary">User</button>
+          <div className="btn primary navli">User</div>
           <div className="dropdown-content">
             {userOptionsList.user.map(({ href, title }, index) => (
               <li key={index}>
                 <Link href={href} key={index}>
-                  <a>{title}</a>
+                  <a
+                    onClick={() => {
+                      !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+                    }}
+                  >
+                    {title}
+                  </a>
                 </Link>
               </li>
             ))}
@@ -139,48 +157,72 @@ const Nav = () => {
     adminOptions = (
       <>
         <li className="dropdown">
-          <button className="btn primary">Label</button>
+          <div className="btn primary navli">Label</div>
           <div className="dropdown-content">
             {adminOptionsList.label.map(({ href, title }, index) => (
               <li key={index}>
                 <Link href={href} key={index}>
-                  <a>{title}</a>
+                  <a
+                    onClick={() => {
+                      !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+                    }}
+                  >
+                    {title}
+                  </a>
                 </Link>
               </li>
             ))}
           </div>
         </li>
         <li className="dropdown">
-          <button className="btn primary">Artist</button>
+          <div className="btn primary navli">Artist</div>
           <div className="dropdown-content">
             {adminOptionsList.artist.map(({ href, title }, index) => (
               <li key={index}>
                 <Link href={href} key={index}>
-                  <a>{title}</a>
+                  <a
+                    onClick={() => {
+                      !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+                    }}
+                  >
+                    {title}
+                  </a>
                 </Link>
               </li>
             ))}
           </div>
         </li>
         <li className="dropdown">
-          <button className="btn primary">Album</button>
+          <div className="btn primary navli">Album</div>
           <div className="dropdown-content">
             {adminOptionsList.album.map(({ href, title }, index) => (
               <li key={index}>
                 <Link href={href} key={index}>
-                  <a>{title}</a>
+                  <a
+                    onClick={() => {
+                      !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+                    }}
+                  >
+                    {title}
+                  </a>
                 </Link>
               </li>
             ))}
           </div>
         </li>
         <li className="dropdown">
-          <button className="btn primary">User</button>
+          <div className="btn primary navli">User</div>
           <div className="dropdown-content">
             {adminOptionsList.user.map(({ href, title }, index) => (
               <li key={index}>
                 <Link href={href} key={index}>
-                  <a>{title}</a>
+                  <a
+                    onClick={() => {
+                      !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+                    }}
+                  >
+                    {title}
+                  </a>
                 </Link>
               </li>
             ))}
@@ -198,7 +240,14 @@ const Nav = () => {
   const publicOptions = (
     <li>
       <Link href="/SignIn">
-        <a>Sign In</a>
+        <a
+          className="btn primary navli"
+          onClick={() => {
+            !menuOpen ? setMenuOpen(true) : setMenuOpen(false)
+          }}
+        >
+          Sign In
+        </a>
       </Link>
     </li>
   )

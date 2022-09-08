@@ -153,7 +153,7 @@ const AddCodes = ({ artists }) => {
             <textarea
               id="albumCodes"
               placeholder="Enter your codes separated by a space"
-              cols="50"
+              cols="30"
               rows="8"
               onChange={handleChange}
             ></textarea>

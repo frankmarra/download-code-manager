@@ -19,6 +19,11 @@ export async function getServerSideProps({ req }) {
 const UpdateLabel = ({ user, label }) => {
   const [cookies] = useCookies(['user'])
   const [formValues, setFormValues] = useState({
+    displayName: label
+      ? label.displayName
+        ? label.displayName
+        : label.name
+      : '',
     email: label ? label.email : '',
     url: label ? label.url : '',
     logo: label ? label.logo : '',
@@ -45,6 +50,17 @@ const UpdateLabel = ({ user, label }) => {
         <div className="update-label-form-wrapper u-flow">
           <h1>Update {`${label.name}`}</h1>
           <form className="update-label-form u-flow" onSubmit={handleSubmit}>
+            <div className="input-wrapper">
+              <label htmlFor="displayName">
+                Label Name (This does not effect the label URL)
+              </label>
+              <input
+                onChange={handleChange}
+                id="displayName"
+                type="text"
+                value={formValues.displayName}
+              />
+            </div>
             <div className="input-wrapper">
               <label htmlFor="email">E-mail</label>
               <input
@@ -75,8 +91,8 @@ const UpdateLabel = ({ user, label }) => {
             </div>
             <div className="input-wrapper">
               <label htmlFor="pagePassword">
-                Password to access code generator. Leave blank if you do not
-                want to password protect your codes.
+                Password to access code generator (Leave blank if you do not
+                want to password protect your codes)
               </label>
               <input
                 onChange={handleChange}

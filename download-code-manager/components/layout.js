@@ -3,6 +3,7 @@ import Image from 'next/image'
 import styles from './layout.module.css'
 import Link from 'next/link'
 import Nav from './navbar'
+import Footer from './footer'
 
 export default function Layout({ children }) {
   return (
@@ -18,6 +19,7 @@ export default function Layout({ children }) {
         <Nav />
       </header>
       <main className={styles.main}>{children}</main>
+      <Footer />
     </div>
   )
 }

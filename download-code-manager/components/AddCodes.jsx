@@ -104,6 +104,7 @@ const AddCodes = ({ artists }) => {
         onSubmit={handleSubmit}
       >
         <div className="input-wrapper">
+          <label htmlFor="artist">Artist</label>
           <select
             id="artist"
             onChange={handleArtistChange}
@@ -123,6 +124,7 @@ const AddCodes = ({ artists }) => {
         </div>
         {formValues.artist && artists[formValues.artist].Albums.length > 0 ? (
           <div className="input-wrapper">
+            <label htmlFor="album">Album</label>
             <select id="album" onChange={handleChange} value={formValues.album}>
               <option value="">--Choose Album--</option>
               {artists[formValues.artist].Albums.map((album, index) => (

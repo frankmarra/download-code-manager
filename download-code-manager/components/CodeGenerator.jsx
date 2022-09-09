@@ -118,6 +118,7 @@ const CodeGenerator = ({
             >
               {artists.length > 0 ? (
                 <div className="input-wrapper">
+                  <label htmlFor="artist">Artist</label>
                   <select
                     id="artist"
                     onChange={handleArtistChange}
@@ -143,6 +144,7 @@ const CodeGenerator = ({
                 activeAlbums &&
                 (activeAlbums.length > 1 ? (
                   <div className="input-wrapper">
+                    <label htmlFor="album">Album</label>
                     <select
                       id="album"
                       onChange={handleChange}

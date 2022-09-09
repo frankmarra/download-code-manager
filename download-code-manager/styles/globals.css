@@ -204,3 +204,25 @@ main {
 .burger-menu ul li {
   width: 100%;
 }
+
+footer {
+  font-size: .8rem;
+}
+
+footer a {
+  position: relative;
+}
+
+footer a:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  border-bottom: 2px solid hsl(271, 100%, 35%);
+  transition: 0.3s;
+}
+
+footer a:hover:after {
+  width: 100%;
+}

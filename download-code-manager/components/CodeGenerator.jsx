@@ -23,14 +23,26 @@ const CodeGenerator = ({
     album: ''
   })
 
-  useEffect(() => {
-    const getActiveArtists = async () => {
-      let res = await Client.get(`/labels/${labelId}/active`)
-      let artists = res.data
-      setActiveArtists([{ name: '--Choose Artist--', id: 0 }, ...artists])
+  artists.sort((a, b) => {
+    const artistA = a.name.toUpperCase()
+    const artistB = b.name.toUpperCase()
+    if (artistA < artistB) {
+      return -1
     }
-    getActiveArtists()
-  }, [])
+    if (artistA > artistB) {
+      return 1
+    }
+  })
+
+  // useEffect(() => {
+  //   const getActiveArtists = async () => {
+  //     let res = await Client.get(`/labels/${labelId}/active`)
+  //     let artists = res.data
+
+  //     setActiveArtists([{ name: '--Choose Artist--', id: 0 }, ...artists])
+  //   }
+  //   getActiveArtists()
+  // }, [])
 
   useEffect(() => {
     const getActiveAlbums = async () => {

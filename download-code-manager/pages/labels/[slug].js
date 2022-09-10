@@ -122,14 +122,15 @@ export default function LabelPage({ label }) {
         ) : (
           <section className="form-container">
             <div id="generator-password" className="u-flex-column u-flow">
-              <h1>Enter Password for to access codes</h1>
               <form
                 className="generator-password-form u-flex-column u-flow"
                 id="generator-password-form"
                 onSubmit={handleGeneratorPasswordSubmit}
               >
-                <div className="input-wrapper">
-                  <label htmlFor="pagePassword">Password</label>
+                <div className="input-wrapper u-flow">
+                  <label htmlFor="pagePassword">
+                    Enter password to access codes
+                  </label>
                   <input
                     onChange={handleGeneratorPasswordChange}
                     id="pagePassword"

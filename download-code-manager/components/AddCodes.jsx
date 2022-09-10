@@ -16,6 +16,18 @@ const AddCodes = ({ artists }) => {
     album: '',
     albumCodes: ''
   })
+
+  artists.sort((a, b) => {
+    const artistA = a.name.toUpperCase()
+    const artistB = b.name.toUpperCase()
+    if (artistA < artistB) {
+      return -1
+    }
+    if (artistA > artistB) {
+      return 1
+    }
+  })
+
   useEffect(() => {
     const getCodeTotals = async () => {
       if (formValues.album) {

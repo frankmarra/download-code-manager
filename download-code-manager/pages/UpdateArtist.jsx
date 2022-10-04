@@ -18,11 +18,12 @@ const UpdateArtist = ({ user, artists }) => {
   const [artist, setArtist] = useState()
   const [artistChoice, setArtistChoice] = useState('')
   const [formValues, setFormValues] = useState({
-    name: '',
     email: '',
     url: '',
     logo: '',
     redeemLink: '',
+    pagePassword: '',
+    displayName: '',
     isActive: ''
   })
   const router = useRouter()
@@ -41,19 +42,21 @@ const UpdateArtist = ({ user, artists }) => {
   useEffect(() => {
     artist
       ? setFormValues({
-          name: artist.name,
           email: artist.email,
           url: artist.url,
           logo: artist.logo,
           redeemLink: artist.redeemLink,
+          pagePassword: artist.pagePassword,
+          displayName: artist.displayName ? artist.displayName : artist.name,
           isActive: artist.isActive
         })
       : setFormValues({
-          name: '',
           email: '',
           url: '',
           logo: '',
           redeemLink: '',
+          pagePassword: '',
+          displayName: '',
           isActive: ''
         })
   }, [artist])
@@ -95,12 +98,14 @@ const UpdateArtist = ({ user, artists }) => {
           </div>
           <form className="update-artist-form u-flow" onSubmit={handleSubmit}>
             <div className="input-wrapper">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="name">
+                Name (This does not effect the download code manager artist URL)
+              </label>
               <input
                 onChange={handleChange}
                 id="name"
                 type="text"
-                value={formValues.name}
+                value={formValues.displayName}
                 required
               />
             </div>
@@ -113,7 +118,7 @@ const UpdateArtist = ({ user, artists }) => {
                 value={formValues.email}
                 required
               />
-            </div>
+              </div>*/}
             <div className="input-wrapper">
               <label htmlFor="url">URL</label>
               <input
@@ -133,6 +138,19 @@ const UpdateArtist = ({ user, artists }) => {
               />
             </div>
             <div className="input-wrapper">
+              <label htmlFor="pagePassword">
+                Password to access code generator (Leave blank if you do not
+                want to password protect your codes)
+              </label>
+              <input
+                onChange={handleChange}
+                id="pagePassword"
+                type="text"
+                value={formValues.pagePassword}
+              />
+            </div>
+
+            <div className="input-wrapper">
               <label htmlFor="redeemLink">Redemption Link</label>
               <input
                 onChange={handleChange}
@@ -140,7 +158,7 @@ const UpdateArtist = ({ user, artists }) => {
                 type="text"
                 value={formValues.redeemLink}
               />
-              </div>*/}
+            </div>
             <div className="input-wrapper">
               <label htmlFor="isActive">Status</label>
               <select id="isActive" onChange={handleChange}>

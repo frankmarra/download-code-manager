@@ -1,11 +1,12 @@
+//Add album page
+
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
-import axios from 'axios'
-import Nav from '../components/navbar'
 import { parseCookies } from '../helpers'
 import Client from '../services/api'
 
+//Get user cookie.
 export async function getServerSideProps({ req }) {
   const cookies = parseCookies(req)
 

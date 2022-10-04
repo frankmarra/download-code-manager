@@ -1,8 +1,6 @@
 import Head from 'next/head'
-
 import utilStyles from '../../styles/utils.module.css'
-
-import CodeGenerator from '../../components/CodeGenerator'
+import ArtistCodeGenerator from '../../components/ArtistCodeGenerator'
 import AddCodes from '../../components/AddCodes'
 import { useCookies } from 'react-cookie'
 import { useEffect, useState } from 'react'
@@ -10,13 +8,13 @@ import Client from '../../services/api'
 import { useRouter } from 'next/router'
 
 export async function getServerSideProps({ params }) {
-  const res = await Client.get(`/labels/${params.slug}`)
-  const label = res.data
+  const res = await Client.get(`/artist/${params.slug}`)
+  const artist = res.data
 
-  return { props: { label } }
+  return { props: { artist } }
 }
 
-export default function LabelPage({ label }) {
+export default function ArtistPage({ artist }) {
   const [cookies] = useCookies(['user'])
   const [auth, setAuth] = useState(false)
   const [codeAuth, setCodeAuth] = useState(false)
@@ -24,27 +22,18 @@ export default function LabelPage({ label }) {
   const [generatorPasswordValue, setGeneratorPasswordValue] = useState({
     pagePassword: ''
   })
-
-  label.Artists.sort((a, b) => {
-    const artistA = a.name.toUpperCase()
-    const artistB = b.name.toUpperCase()
-    if (artistA < artistB) {
-      return -1
-    }
-    if (artistA > artistB) {
-      return 1
-    }
-  })
-
   const router = useRouter()
 
   useEffect(() => {
     if (cookies.user) {
-      if (cookies.user.user.labelId === label.id || cookies.user.user.isAdmin) {
+      if (
+        cookies.user.user.labelId === artist.labelId ||
+        cookies.user.user.isAdmin
+      ) {
         setAuth(true)
       }
     }
-  }, [label])
+  }, [artist])
 
   if (router.isFallback) {
     return <div>Loading...</div>
@@ -59,7 +48,7 @@ export default function LabelPage({ label }) {
 
   const handleGeneratorPasswordSubmit = (e) => {
     e.preventDefault()
-    if (label.pagePassword == generatorPasswordValue.pagePassword) {
+    if (artist.pagePassword == generatorPasswordValue.pagePassword) {
       setCodeAuth(true)
       setSigninError(false)
     } else {
@@ -68,40 +57,37 @@ export default function LabelPage({ label }) {
     }
   }
 
-  return label ? (
+  return artist ? (
     <>
       <Head>
-        <title>{label.name}</title>
+        <title>{artist.name}</title>
         <script
           src="https://kit.fontawesome.com/ae0d597aae.js"
           crossOrigin="anonymous"
         ></script>
       </Head>
       <section className="u-flex-column">
-        <a href={label.url}>
-          {label.logo ? (
+        <a href={artist.url}>
+          {artist.logo ? (
             <img
-              src={label.logo}
+              src={artist.logo}
               className={utilStyles.labelLogo}
               height={200}
               width={200}
-              alt={label.name}
+              alt={artist.name}
             />
           ) : null}
         </a>
         <h1 className={utilStyles.labelName}>
-          {label.displayName ? label.displayName : label.name}
+          {artist.displayName ? artist.displayName : artist.name}
         </h1>
-        {auth ? (
-          <div className="add-codes">
-            <AddCodes artists={label.Artists} />
-          </div>
-        ) : !label.pagePassword || codeAuth == true ? (
+        {!artist.pagePassword || codeAuth == true ? (
           <div className="code-generator u-flow">
-            <CodeGenerator
-              labelId={label.id}
-              artists={label.Artists}
-              redeemLink={label.redeemLink}
+            <ArtistCodeGenerator
+              labelId={artist.labelId}
+              artistId={artist.id}
+              albums={artist.Albums}
+              redeemLink={artist.redeemLink}
             />
           </div>
         ) : (

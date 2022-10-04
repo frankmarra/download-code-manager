@@ -52,7 +52,8 @@ const UpdateLabel = ({ user, label }) => {
           <form className="update-label-form u-flow" onSubmit={handleSubmit}>
             <div className="input-wrapper">
               <label htmlFor="displayName">
-                Label Name (This does not effect the label URL)
+                Label Name (This does not effect the download code manager label
+                URL)
               </label>
               <input
                 onChange={handleChange}

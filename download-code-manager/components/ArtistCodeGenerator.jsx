@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react'
 import Client from '../services/api'
 
-const CodeGenerator = ({ artists, redeemLink, labelId }) => {
+const ArtistCodeGenerator = ({ albums, redeemLink, labelId, artistId }) => {
   const [activeAlbums, setActiveAlbums] = useState()
   const [activeCodes, setActiveCodes] = useState()
   const [randomCode, setRandomCode] = useState()
   const [clicked, setClicked] = useState(false)
   const [copied, setCopied] = useState(false)
   const [formValues, setFormValues] = useState({
-    artist: '',
     album: ''
   })
 
-  artists.sort((a, b) => {
+  albums.sort((a, b) => {
     const artistA = a.name.toUpperCase()
     const artistB = b.name.toUpperCase()
     if (artistA < artistB) {
@@ -26,19 +25,19 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
   useEffect(() => {
     const getActiveAlbums = async () => {
       let res = await Client.get(
-        `/labels/${labelId}/artists/${formValues.artist}/active`
+        `/labels/${labelId}/artists/${artistId}/active`
       )
       let albums = res.data
 
       setActiveAlbums([{ name: '--Choose Album--', id: 0 }, ...albums])
     }
-    formValues.artist ? getActiveAlbums() : null
-  }, [formValues.artist])
+    getActiveAlbums()
+  }, [])
 
   useEffect(() => {
     const getActiveCodes = async () => {
       const res = await Client.get(
-        `/labels/${labelId}/artists/${formValues.artist}/albums/${formValues.album}/codes/unused`
+        `/labels/${labelId}/artists/${artistId}/albums/${formValues.album}/codes/unused`
       )
       let codes = res.data
       setActiveCodes(codes)
@@ -51,17 +50,13 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
       if (randomCode) {
         let codeId = parseInt(randomCode.id)
         await Client.put(
-          `/labels/${labelId}/artists/${formValues.artist}/albums/${formValues.album}/codes/${codeId}`,
+          `/labels/${labelId}/artists/${artistId}/albums/${formValues.album}/codes/${codeId}`,
           { used: true }
         )
       }
     }
     removeCode(randomCode)
   }, [randomCode])
-
-  const handleArtistChange = (e) => {
-    setFormValues({ album: '0', [e.target.id]: e.target.value })
-  }
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.id]: e.target.value })
@@ -95,7 +90,7 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
   }
 
   return (
-    artists && (
+    activeAlbums && (
       <div className="artist-album-select-wrapper">
         {!clicked ? (
           <>
@@ -106,50 +101,24 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
               name="artist-album-select"
               onSubmit={handleSubmit}
             >
-              {artists.length > 0 ? (
+              {activeAlbums.length > 1 ? (
                 <div className="input-wrapper">
-                  <label htmlFor="artist">Artist</label>
+                  <label htmlFor="album">Album</label>
                   <select
-                    id="artist"
-                    onChange={handleArtistChange}
-                    value={formValues.artist}
-                    defaultValue="--Choose Artist--"
+                    id="album"
+                    onChange={handleChange}
+                    value={formValues.album}
                   >
-                    <option selected value="">
-                      --Choose Artist--
-                    </option>
-                    {artists.map((artist, index) =>
-                      artist.isActive ? (
-                        <option key={index} value={artist.id}>
-                          {artist.name}
-                        </option>
-                      ) : null
-                    )}
+                    {activeAlbums.map((album, index) => (
+                      <option key={index} value={album.id}>
+                        {album.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               ) : (
-                <h4>No Artists Available</h4>
+                <h4>No Albums for this Artist</h4>
               )}
-              {formValues.artist != '' &&
-                activeAlbums &&
-                (activeAlbums.length > 1 ? (
-                  <div className="input-wrapper">
-                    <label htmlFor="album">Album</label>
-                    <select
-                      id="album"
-                      onChange={handleChange}
-                      value={formValues.album}
-                    >
-                      {activeAlbums.map((album, index) => (
-                        <option key={index} value={album.id}>
-                          {album.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                ) : (
-                  <h4>No Albums for this Artist</h4>
-                ))}
               {formValues.album != '' &&
               formValues.album != '0' &&
               activeCodes ? (
@@ -205,4 +174,4 @@ const CodeGenerator = ({ artists, redeemLink, labelId }) => {
   )
 }
 
-export default CodeGenerator
+export default ArtistCodeGenerator

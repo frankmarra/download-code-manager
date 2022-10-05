@@ -109,6 +109,10 @@ const UpdateArtist = ({ user, artists }) => {
                 required
               />
             </div>
+            <div className="input-wrapper">
+              <label htmlFor="artistUrl">DCM Artist Site</label>
+              <p>https://downloadcodemanager.com/artists/{artist.slug}</p>
+            </div>
             {/*<div className="input-wrapper">
               <label htmlFor="email">E-mail</label>
               <input
